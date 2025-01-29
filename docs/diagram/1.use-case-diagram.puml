@@ -1,0 +1,45 @@
+@startuml
+left to right direction
+
+actor Customer
+actor Admin
+
+rectangle "E-Commerce App" {
+    rectangle "Product Microservice" {
+        Customer --> (Browse Products)
+        Customer --> (View Product Details)
+        Admin --> (Add Product)
+        Admin --> (Update Product)
+        Admin --> (Delete Product)
+    }
+
+    rectangle "Order Microservice" {
+        Customer --> (Place Order)
+        Customer --> (View Order History)
+        Customer --> (Cancel Order)
+        Admin --> (Manage Orders)
+    }
+
+    rectangle "Payment Microservice" {
+        Customer --> (Make Payment)
+        Customer --> (View Payment History)
+    }
+
+    rectangle "User Microservice" {
+        Customer --> (Register)
+        Customer --> (Login)
+        Customer --> (Update Profile)
+        Admin --> (Manage Users)
+    }
+
+    rectangle "Inventory Microservice" {
+        Admin --> (Manage Inventory)
+    }
+
+    rectangle "Notification Microservice" {
+        Customer --> (Receive Order Notifications)
+        Admin --> (Send Notifications)
+    }
+}
+
+@enduml

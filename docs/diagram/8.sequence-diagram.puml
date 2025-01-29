@@ -1,0 +1,22 @@
+@startuml
+
+actor Customer
+participant "Order Microservice" as Order
+participant "Payment Microservice" as Payment
+participant "Notification Microservice" as Notification
+
+Customer -> Order : Place Order
+Order -> Payment : Initiate Payment
+Payment --> Order : Payment Status (Success/Failure)
+alt Payment Successful
+    Order -> Notification : Send Order Confirmation
+    Notification --> Customer : Order Confirmation Notification
+    Order -> Order : Process Order
+    Order -> Notification : Send Shipping Notification
+    Notification --> Customer : Shipping Notification
+else Payment Failed
+    Order -> Notification : Send Payment Failure Notification
+    Notification --> Customer : Payment Failure Notification
+end
+
+@enduml

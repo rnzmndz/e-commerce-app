@@ -1,0 +1,65 @@
+@startuml
+
+' Abstract class Auditable
+abstract class Auditable {
+  -createdAt: LocalDateTime
+  -updatedAt: LocalDateTime
+}
+
+' Enum UserRole
+enum UserRole {
+  ADMIN
+  CUSTOMER
+}
+
+' Class UserDetail
+class UserDetail {
+  -id: Long
+  -username: String
+  -password: String
+  -email: String
+  -firstName: String
+  -lastName: String
+  -role: UserRole
+  +getAuthorities(): Collection<GrantedAuthority>
+  +addAddress(address: Address): void
+  +addAuthorities(authority: Authority): void
+}
+
+' Class Authority
+class Authority {
+  -id: Long
+  -name: String
+}
+
+' Class Address
+class Address {
+  -id: Long
+  -street: String
+  -city: String
+  -state: String
+  -zipCode: String
+  -country: String
+  +getCompleteAddress(): String
+}
+
+' Class Profile
+class Profile {
+  -id: Long
+  -bio: String
+  -profilePictureUrl: String
+}
+
+' Relationships
+UserDetail -up-|> Auditable
+UserDetail "1" *-down- "*" Address
+UserDetail "1" *-right- "1" Profile
+UserDetail "*" -left-* "*" Authority
+
+' Notes
+note bottom of UserDetail: Implements UserDetails interface
+note right of Authority: Used for Spring Security
+note left of Address: Represents user's addresses
+note right of Profile: User's additional information
+
+@enduml

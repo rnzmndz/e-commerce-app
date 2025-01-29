@@ -1,0 +1,54 @@
+@startuml
+start
+
+:Customer visits e-commerce app;
+
+if (Is the customer logged in?) then (Yes)
+    :Browse Products;
+    :View Product Details;
+    if (Customer wants to place an order?) then (Yes)
+        :Place Order;
+        :Make Payment;
+        :Receive Order Notification;
+        :View Order History;
+    else (No)
+        :Continue browsing;
+    endif
+else (No)
+    :Register/Login;
+    :Update Profile;
+    :Browse Products;
+    :View Product Details;
+    if (Customer wants to place an order?) then (Yes)
+        :Place Order;
+        :Make Payment;
+        :Receive Order Notification;
+        :View Order History;
+    else (No)
+        :Continue browsing;
+    endif
+endif
+
+stop
+
+start
+
+:Admin logs into the system;
+
+fork
+    :Add Product;
+    :Update Product;
+    :Delete Product;
+fork again
+    :Manage Orders;
+fork again
+    :Manage Inventory;
+fork again
+    :Manage Users;
+fork again
+    :Send Notifications;
+end fork
+
+stop
+
+@enduml

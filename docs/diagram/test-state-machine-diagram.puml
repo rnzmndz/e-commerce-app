@@ -1,0 +1,37 @@
+@startuml
+
+title Test State Machine Diagram for Order Microservice
+
+state "Start Test" as Start
+state "Simulate Order Creation" as Created
+state "Simulate Payment Initiation" as PendingPayment
+state "Simulate Payment Success" as Paid
+state "Simulate Payment Failure" as PaymentFailed
+state "Simulate Order Processing" as Processing
+state "Simulate Order Shipped" as Shipped
+state "Simulate Order Delivered" as Delivered
+state "Simulate Order Cancelled" as Cancelled
+state "Test Passed" as Passed
+state "Test Failed" as Failed
+
+[*] --> Start : Start Test
+Start --> Created : Simulate Order Creation
+Created --> PendingPayment : Simulate Payment Initiation
+
+PendingPayment --> Paid : Simulate Payment Success
+Paid --> Processing : Simulate Order Processing
+Processing --> Shipped : Simulate Order Shipped
+Shipped --> Delivered : Simulate Order Delivered
+Delivered --> Passed : Verify Order Completion
+Passed --> [*] : End Test
+
+PendingPayment --> PaymentFailed : Simulate Payment Failure
+PaymentFailed --> Cancelled : Simulate Order Cancellation
+Cancelled --> Failed : Verify Order Cancellation
+Failed --> [*] : End Test
+
+Shipped --> Cancelled : Simulate Delivery Failure
+Cancelled --> Failed : Verify Order Cancellation
+Failed --> [*] : End Test
+
+@enduml

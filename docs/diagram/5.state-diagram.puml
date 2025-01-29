@@ -1,0 +1,14 @@
+@startuml
+
+[*] --> Created : Order Placed
+Created --> PendingPayment : Payment Initiated
+PendingPayment --> Paid : Payment Successful
+PendingPayment --> Cancelled : Payment Failed or Customer Cancels
+Paid --> Processing : Order Confirmed
+Processing --> Shipped : Order Shipped
+Shipped --> Delivered : Order Delivered
+Shipped --> Cancelled : Delivery Failed
+Delivered --> [*] : Order Completed
+Cancelled --> [*] : Order Cancelled
+
+@enduml

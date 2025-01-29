@@ -1,0 +1,30 @@
+@startuml
+interface UserInterface {
+    +createUser(userCreateDTO : UserCreateDTO) : UserDTO
+    +getById(id: Long) : UserDTO
+    +getAll(pageable : Pageable) : Page<UserDTO>
+    +updateById(id: Long) : UserDTO
+    +deleteById(id: Long) : void
+    +addAuthoritiesToUser(id: Long, Set<Authority> authorities) : UserDTO
+    +removeAuthorityFromUser(id: Long, authority : Authority) : UserDTO
+    +getUserByRole(userRole : UserRole) : Page<UserDTO>
+    +existsByUsernameOrEmail(username : String, email : String) : boolean
+    +changePassword(id : Long, String newPassword) : void
+}
+
+class UserInterfaceImpl {
+    +createUser(userCreateDTO : UserCreateDTO) : UserDTO
+    +getById(id: Long) : UserDTO
+    +getAll(pageable : Pageable) : Page<UserDTO>
+    +updateById(id: Long) : UserDTO
+    +deleteById(id: Long) : void
+    +addAuthoritiesToUser(id: Long, Set<Authority> authorities) : UserDTO
+    +removeAuthorityFromUser(id: Long, authority : Authority) : UserDTO
+    +getUserByRole(userRole : UserRole) : Page<UserDTO>
+    +existsByUsernameOrEmail(username : String, email : String) : boolean
+    +changePassword(id : Long, String newPassword) : void
+
+}
+
+UserInterface <|-- UserInterfaceImpl
+@enduml

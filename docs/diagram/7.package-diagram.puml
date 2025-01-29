@@ -1,0 +1,63 @@
+@startuml
+
+package "E-Commerce App" {
+    package "Frontend" {
+        [Web Application] as WebApp
+    }
+
+    package "API Gateway" {
+        [API Gateway] as APIGateway
+    }
+
+    package "Microservices" {
+        package "Product Microservice" {
+            [Product Service] as Product
+        }
+
+        package "Order Microservice" {
+            [Order Service] as Order
+        }
+
+        package "Payment Microservice" {
+            [Payment Service] as Payment
+        }
+
+        package "User Microservice" {
+            [User Service] as User
+        }
+
+        package "Inventory Microservice" {
+            [Inventory Service] as Inventory
+        }
+
+        package "Notification Microservice" {
+            [Notification Service] as Notification
+        }
+    }
+
+    package "Database" {
+        [Database] as DB
+    }
+
+    package "Message Queue" {
+        [Message Queue] as MQ
+    }
+}
+
+' Relationships
+WebApp --> APIGateway : Uses
+APIGateway --> Product : Routes Requests
+APIGateway --> Order : Routes Requests
+APIGateway --> Payment : Routes Requests
+APIGateway --> User : Routes Requests
+APIGateway --> Inventory : Routes Requests
+APIGateway --> Notification : Routes Requests
+Product --> DB : Reads/Writes Data
+Order --> DB : Reads/Writes Data
+Payment --> DB : Reads/Writes Data
+User --> DB : Reads/Writes Data
+Inventory --> DB : Reads/Writes Data
+Notification --> MQ : Sends Messages
+MQ --> Notification : Receives Messages
+
+@enduml

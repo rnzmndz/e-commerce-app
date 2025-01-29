@@ -1,0 +1,31 @@
+@startuml
+
+title Test Activity Diagram for E-Commerce App
+
+start
+
+:Start Test;
+
+:Simulate Customer Login;
+
+:Simulate Browsing Products;
+
+:Simulate Adding Product to Cart;
+
+:Simulate Placing Order;
+
+:Simulate Payment Process;
+
+if (Payment Successful?) then (Yes)
+    :Verify Order Data is Saved;
+    :Verify Order Confirmation is Sent;
+    :Verify Shipping Notification is Sent;
+    :Test Passed;
+    stop
+else (No)
+    :Verify Payment Failure Notification is Sent;
+    :Test Failed;
+    stop
+endif
+
+@enduml

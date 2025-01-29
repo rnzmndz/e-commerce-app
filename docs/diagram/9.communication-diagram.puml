@@ -1,0 +1,35 @@
+@startuml
+
+title E-Commerce App Communication Diagram
+
+actor Customer
+participant "API Gateway" as APIGateway
+participant "Product Microservice" as Product
+participant "Order Microservice" as Order
+participant "Payment Microservice" as Payment
+participant "User Microservice" as User
+participant "Inventory Microservice" as Inventory
+participant "Notification Microservice" as Notification
+database "Database" as DB
+queue "Message Queue" as MQ
+
+' Customer Interactions
+Customer -> APIGateway : 1. Place Order
+APIGateway -> Order : 2. Forward Request
+Order -> Payment : 3. Initiate Payment
+Payment --> Order : 4. Payment Status
+Order -> DB : 5. Save Order Data
+Order -> Notification : 6. Send Order Confirmation
+Notification -> MQ : 7. Queue Notification
+MQ --> Notification : 8. Process Notification
+Notification --> Customer : 9. Send Notification
+
+' Admin Interactions
+APIGateway -> Product : 10. Add/Update Product
+Product -> DB : 11. Save Product Data
+APIGateway -> Inventory : 12. Update Inventory
+Inventory -> DB : 13. Save Inventory Data
+APIGateway -> User : 14. Manage Users
+User -> DB : 15. Save User Data
+
+@enduml

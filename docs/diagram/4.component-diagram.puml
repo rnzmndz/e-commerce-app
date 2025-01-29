@@ -1,0 +1,30 @@
+@startuml
+
+package "E-Commerce App" {
+    [Product Microservice] as Product
+    [Order Microservice] as Order
+    [Payment Microservice] as Payment
+    [User Microservice] as User
+    [Inventory Microservice] as Inventory
+    [Notification Microservice] as Notification
+}
+
+[Customer] --> [User] : Registers/Logs in
+[Customer] --> [Product] : Browses Products
+[Customer] --> [Order] : Places Order
+[Customer] --> [Payment] : Makes Payment
+[Customer] --> [Notification] : Receives Notifications
+
+[Admin] --> [User] : Manages Users
+[Admin] --> [Product] : Manages Products
+[Admin] --> [Order] : Manages Orders
+[Admin] --> [Inventory] : Manages Inventory
+[Admin] --> [Notification] : Sends Notifications
+
+[Order] --> [Product] : Retrieves Product Details
+[Order] --> [Payment] : Processes Payment
+[Order] --> [Notification] : Sends Order Notifications
+[Payment] --> [Notification] : Sends Payment Notifications
+[Inventory] --> [Product] : Tracks Stock
+
+@enduml

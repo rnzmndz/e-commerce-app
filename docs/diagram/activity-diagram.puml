@@ -1,0 +1,77 @@
+@startuml
+
+title E-Commerce App Activity Diagram
+
+start
+
+:Customer visits e-commerce app;
+
+if (Is the customer logged in?) then (Yes)
+    :Browse Products;
+    :View Product Details;
+    if (Customer wants to place an order?) then (Yes)
+        :Place Order;
+        :Initiate Payment;
+        if (Payment Successful?) then (Yes)
+            :Save Order Data;
+            :Send Order Confirmation;
+            :Process Order;
+            :Send Shipping Notification;
+            :Order Delivered;
+            stop
+        else (No)
+            :Payment Failed;
+            :Send Payment Failure Notification;
+            stop
+        endif
+    else (No)
+        :Continue Browsing;
+        stop
+    endif
+else (No)
+    :Register/Login;
+    :Update Profile;
+    :Browse Products;
+    :View Product Details;
+    if (Customer wants to place an order?) then (Yes)
+        :Place Order;
+        :Initiate Payment;
+        if (Payment Successful?) then (Yes)
+            :Save Order Data;
+            :Send Order Confirmation;
+            :Process Order;
+            :Send Shipping Notification;
+            :Order Delivered;
+            stop
+        else (No)
+            :Payment Failed;
+            :Send Payment Failure Notification;
+            stop
+        endif
+    else (No)
+        :Continue Browsing;
+        stop
+    endif
+endif
+
+start
+
+:Admin logs into the system;
+
+fork
+    :Add Product;
+    :Update Product;
+    :Delete Product;
+fork again
+    :Manage Orders;
+fork again
+    :Manage Inventory;
+fork again
+    :Manage Users;
+fork again
+    :Send Notifications;
+end fork
+
+stop
+
+@enduml

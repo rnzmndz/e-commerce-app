@@ -1,0 +1,85 @@
+@startuml
+
+' Classes for Product Microservice
+class Product {
+    +String productId
+    +String name
+    +String description
+    +Double price
+    +Integer stock
+    +addProduct()
+    +updateProduct()
+    +deleteProduct()
+}
+
+' Classes for Order Microservice
+class Order {
+    +String orderId
+    +String customerId
+    +List<Product> products
+    +Double totalAmount
+    +String status
+    +placeOrder()
+    +cancelOrder()
+    +viewOrderHistory()
+}
+
+' Classes for Payment Microservice
+class Payment {
+    +String paymentId
+    +String orderId
+    +Double amount
+    +String paymentStatus
+    +makePayment()
+    +viewPaymentHistory()
+}
+
+' Classes for User Microservice
+class User {
+    +String userId
+    +String name
+    +String email
+    +String password
+    +register()
+    +login()
+    +updateProfile()
+}
+
+' Classes for Inventory Microservice
+class Inventory {
+    +String productId
+    +Integer stock
+    +manageInventory()
+}
+
+' Classes for Notification Microservice
+class Notification {
+    +String notificationId
+    +String userId
+    +String message
+    +sendNotification()
+    +receiveNotification()
+}
+
+' Relationships between classes
+Product "1" *-- "0..*" Order : contains
+Order "1" -- "1" Payment : processes
+User "1" -- "0..*" Order : places
+User "1" -- "0..*" Notification : receives
+Inventory "1" -- "1" Product : tracks
+Admin -- User : manages
+Admin -- Product : manages
+Admin -- Order : manages
+Admin -- Inventory : manages
+Admin -- Notification : sends
+
+' Actor
+class Customer
+class Admin
+
+Customer -- User : interacts with
+Customer -- Order : places
+Customer -- Payment : makes
+Customer -- Notification : receives
+
+@enduml

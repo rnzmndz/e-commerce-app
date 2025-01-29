@@ -1,0 +1,51 @@
+@startuml
+
+title E-Commerce App Deployment Diagram
+
+node "Client Device" {
+    component "Customer Browser/Mobile App" as Client
+}
+
+node "Web Server" {
+    component "Web Application" as WebApp
+}
+
+node "API Gateway Server" {
+    component "API Gateway" as APIGateway
+}
+
+node "Microservices Cluster" {
+    component "Product Microservice" as Product
+    component "Order Microservice" as Order
+    component "Payment Microservice" as Payment
+    component "User Microservice" as User
+    component "Inventory Microservice" as Inventory
+    component "Notification Microservice" as Notification
+}
+
+node "Database Server" {
+    database "Database" as Database
+}
+
+node "Message Queue Server" {
+    queue "Message Queue" as MessageQueue
+}
+
+' Connections
+Client --> WebApp : HTTP/HTTPS
+WebApp --> APIGateway : API Calls
+APIGateway --> Product : API Calls
+APIGateway --> Order : API Calls
+APIGateway --> Payment : API Calls
+APIGateway --> User : API Calls
+APIGateway --> Inventory : API Calls
+APIGateway --> Notification : API Calls
+Product --> Database : Read/Write Data
+Order --> Database : Read/Write Data
+Payment --> Database : Read/Write Data
+User --> Database : Read/Write Data
+Inventory --> Database : Read/Write Data
+Notification --> MessageQueue : Send Messages
+MessageQueue --> Notification : Receive Messages
+
+@enduml
