@@ -31,7 +31,7 @@ class UserMapperTest {
     }
 
     @Test
-    @DisplayName("Should return null when authorities is null")
+    @DisplayName("Should return empty when authorities is null")
     void testMapAuthorities_WithNullAuthorities() {
         // Arrange
         UserDetail userDetail = new UserDetail();
