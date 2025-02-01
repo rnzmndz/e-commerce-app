@@ -1,23 +1,36 @@
 package net.renzo.userservice.dto;
 
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import net.renzo.userservice.util.ValidationPatterns;
 
 @Data
 @Builder
-public class AddressDTO {
+public class UserUpdateDTO {
+    @Nullable
+    @Size(min = 3, max = 50)
+    @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "Field contains invalid characters")
+    private String username;
 
-    private Long id;
+    @Nullable
+    @Email
+    private String email;
+
+    @Nullable
     @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "Field contains invalid characters")
-    private String street;
+    private String firstName;
+
+    @Nullable
     @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "Field contains invalid characters")
-    private String city;
-    @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "Field contains invalid characters")
-    private String state;
-    @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "Field contains invalid characters")
-    private String zipCode;
-    @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "Field contains invalid characters")
-    private String country;
+    private String lastName;
+
+    @Nullable
+    private String phoneNumber;
+
+    @Nullable
+    private AddressDTO address;
 }

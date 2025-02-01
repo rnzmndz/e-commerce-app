@@ -2,8 +2,10 @@ package net.renzo.userservice.service;
 
 import net.renzo.userservice.dto.UserCreateDTO;
 import net.renzo.userservice.dto.UserDTO;
+import net.renzo.userservice.dto.UserUpdateDTO;
 import net.renzo.userservice.mapper.UserCreateMapper;
 import net.renzo.userservice.mapper.UserMapper;
+import net.renzo.userservice.mapper.UserUpdateMapper;
 import net.renzo.userservice.model.Authority;
 import net.renzo.userservice.model.UserDetail;
 import net.renzo.userservice.model.UserRole;
@@ -66,23 +68,63 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateById(Long id) {
-        return null;
+    public UserDTO updateById(Long id, UserUpdateDTO userUpdateDTO) {
+        // Find the user by id, throw an exception if not found
+        UserDetail userDetail = userRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+
+        // Update the user details with the new data from userUpdateDTO
+        UserUpdateMapper.INSTANCE.updateEntityFromDto(userUpdateDTO, userDetail);
+
+        // Save the updated user to the repository
+        userDetail = userRepository.save(userDetail);
+
+        // Convert the updated UserDetail entity to a UserDTO using the userMapper and return it
+        return userMapper.toDTO(userDetail);
     }
 
     @Override
     public void deleteById(Long id) {
+        // Find the user by id, throw an exception if not found
+        UserDetail userDetail = userRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
 
+        // Delete the user from the repository
+        userRepository.delete(userDetail);
     }
 
     @Override
     public UserDTO addAuthoritiesToUser(Long id, Set<Authority> authorities) {
-        return null;
+        // Find the user by id, throw an exception if not found
+        UserDetail userDetail = userRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+
+        // Add the new authorities to the user
+        for (Authority authority : authorities) {
+            userDetail.addAuthorities(authority);
+        }
+
+        // Save the updated user to the repository
+        userDetail = userRepository.save(userDetail);
+
+        // Convert the updated UserDetail entity to a UserDTO using the userMapper and return it
+        return userMapper.toDTO(userDetail);
     }
 
     @Override
     public UserDTO removeAuthorityFromUser(Long id, Authority authority) {
-        return null;
+        // Find the user by id, throw an exception if not found
+        UserDetail userDetail = userRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+
+        // Remove the authority from the user
+        userDetail.getAuthorities().remove(authority);
+
+        // Save the updated user to the repository
+        userDetail = userRepository.save(userDetail);
+
+        // Convert the updated UserDetail entity to a UserDTO using the userMapper and return it
+        return userMapper.toDTO(userDetail);
     }
 
     @Override

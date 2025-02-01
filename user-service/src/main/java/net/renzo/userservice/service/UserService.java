@@ -2,6 +2,7 @@ package net.renzo.userservice.service;
 
 import net.renzo.userservice.dto.UserCreateDTO;
 import net.renzo.userservice.dto.UserDTO;
+import net.renzo.userservice.dto.UserUpdateDTO;
 import net.renzo.userservice.model.Authority;
 import net.renzo.userservice.model.UserRole;
 import org.springframework.data.domain.Page;
@@ -44,7 +45,7 @@ public interface UserService {
      * @param id the ID of the user
      * @return the updated user data transfer object
      */
-    UserDTO updateById(Long id);
+    public UserDTO updateById(Long id, UserUpdateDTO UserUpdateDTO);
 
     /**
      * Deletes a user by their ID.

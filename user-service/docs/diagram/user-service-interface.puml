@@ -3,7 +3,7 @@ interface UserInterface {
     +createUser(userCreateDTO : UserCreateDTO) : UserDTO
     +getById(id: Long) : UserDTO
     +getAll(pageable : Pageable) : Page<UserDTO>
-    +updateById(id: Long) : UserDTO
+    +updateById(id: Long, userUpdateDTO : UserUpdateDTO) : UserDTO
     +deleteById(id: Long) : void
     +addAuthoritiesToUser(id: Long, Set<Authority> authorities) : UserDTO
     +removeAuthorityFromUser(id: Long, authority : Authority) : UserDTO
@@ -16,7 +16,7 @@ class UserInterfaceImpl {
     +createUser(userCreateDTO : UserCreateDTO) : UserDTO
     +getById(id: Long) : UserDTO
     +getAll(pageable : Pageable) : Page<UserDTO>
-    +updateById(id: Long) : UserDTO
+    +updateById(id: Long, userUpdateDTO : UserUpdateDTO) : UserDTO
     +deleteById(id: Long) : void
     +addAuthoritiesToUser(id: Long, Set<Authority> authorities) : UserDTO
     +removeAuthorityFromUser(id: Long, authority : Authority) : UserDTO
