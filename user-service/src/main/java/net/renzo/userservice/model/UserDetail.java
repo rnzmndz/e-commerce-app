@@ -87,6 +87,13 @@ public class UserDetail extends Auditable implements UserDetails {
         authorities.add(authority);
     }
 
+    public void removeAuthorities(Authority authority){
+        if (authorities == null || authority == null) {
+            return;
+        }
+        authorities.remove(authority);
+    }
+
     @Override
     public String getUsername() {
         return username;

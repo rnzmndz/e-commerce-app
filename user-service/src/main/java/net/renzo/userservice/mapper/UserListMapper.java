@@ -8,10 +8,9 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring",
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserListMapper {
-
-    UserListMapper INSTANCE = Mappers.getMapper(UserListMapper.class);
 
     UserListDTO toDTO(UserDetail userDetail);
     List<UserListDTO> toDTOList(List<UserDetail> users);

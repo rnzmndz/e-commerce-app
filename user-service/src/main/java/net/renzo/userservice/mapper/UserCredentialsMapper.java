@@ -3,11 +3,13 @@ package net.renzo.userservice.mapper;
 import net.renzo.userservice.dto.UserCredentialsDTO;
 import net.renzo.userservice.model.UserDetail;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring",
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserCredentialsMapper {
-    UserCredentialsMapper INSTANCE = Mappers.getMapper(UserCredentialsMapper.class);
-
     UserCredentialsDTO toDTO(UserDetail userDetail);
+
+    UserDetail toEntity(UserCredentialsDTO userCredentialsDTO);
 }

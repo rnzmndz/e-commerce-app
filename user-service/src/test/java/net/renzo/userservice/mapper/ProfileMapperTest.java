@@ -26,7 +26,7 @@ class ProfileMapperTest {
                 .build();
 
         //Act
-        ProfileDTO profileDTO = profileMapper.INSTANCE.toDTO(profile);
+        ProfileDTO profileDTO = profileMapper.toDTO(profile);
 
         //Assert
         assertThat(profile.getBio()).isEqualTo(profileDTO.getBio());
@@ -42,7 +42,7 @@ class ProfileMapperTest {
                 .build();
 
         //Act
-        Profile profile = profileMapper.INSTANCE.toEntity(profileDTO);
+        Profile profile = profileMapper.toEntity(profileDTO);
 
         //Assert
         assertThat(profileDTO.getBio()).isEqualTo(profile.getBio());
@@ -58,7 +58,7 @@ class ProfileMapperTest {
                 .build();
 
         //Act
-        ProfileDTO profileDTO = profileMapper.INSTANCE.toDTO(profile);
+        ProfileDTO profileDTO = profileMapper.toDTO(profile);
 
         //Assert
         assertThat(profile.getBio()).isNull();

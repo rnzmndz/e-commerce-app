@@ -40,7 +40,7 @@ class UserCreateMapperTest {
     @Test
     void shouldMapUserCreateDTOToUserDetail() {
         // Given
-        when(profileMapper.toEntity(any(ProfileDTO.class)))
+        lenient().when(profileMapper.toEntity(any(ProfileDTO.class)))
                 .thenAnswer(invocation -> {
                     ProfileDTO dto = invocation.getArgument(0);
                     Profile profile = new Profile();

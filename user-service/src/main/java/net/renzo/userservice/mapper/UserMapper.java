@@ -19,28 +19,10 @@ import java.util.stream.Collectors;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
-
     @Mapping(target = "authorities", expression = "java(mapAuthorities(userDetail))")
     @Mapping(target = "addresses", expression = "java(mapAddresses(userDetail))")
     UserDTO toDTO(UserDetail userDetail);
 
-//    @InheritInverseConfiguration
-//    @Mapping(target = "addresses", expression = "java(userDTO.getAddress() != null ? java.util.Collections.singletonList(userDTO.getAddress()) : java.util.Collections.emptyList())")
-//    @Mapping(target = "authorities", ignore = true)
-//    UserDetail toEntity(UserDTO userDTO);
-//
-//    @AfterMapping
-//    default void setAuthorities(@MappingTarget UserDetail userDetail, UserDTO userDTO) {
-//        if (userDTO.getAuthorities() != null) {
-//            userDTO.getAuthorities().forEach(auth -> {
-//                Authority authority = Authority.builder()
-//                        .name(auth)
-//                        .build();
-//                userDetail.addAuthorities(authority);
-//            });
-//        }
-//    }
 
     default Set<String> mapAuthorities(UserDetail userDetail) {
         if (userDetail == null) {
@@ -56,9 +38,11 @@ public interface UserMapper {
     }
 
     default List<AddressDTO> mapAddresses(UserDetail userDetail) {
+        if(userDetail.getAddresses() == null) {
+            return Collections.emptyList();
+        }
         return userDetail.getAddresses().stream()
-                .map(address -> Mappers.getMapper(AddressMapper.class).INSTANCE.toDTO(address))
+                .map(address -> Mappers.getMapper(AddressMapper.class).toDTO(address))
                 .collect(Collectors.toList());
     }
-//    void updateEntityFromDto(UserDTO userDTO, @MappingTarget UserDetail userDetail);
 }

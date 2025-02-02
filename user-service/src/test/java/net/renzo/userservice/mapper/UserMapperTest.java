@@ -15,11 +15,6 @@ import net.renzo.userservice.model.UserDetail;
 class UserMapperTest {
 	private UserMapper userMapper;
 
-	@BeforeEach
-	void setUp() throws Exception {
-        userMapper = UserMapper.INSTANCE;
-	}
-
     @Test
     @DisplayName("Should return null when UserDetail is null")
     void testMapAuthorities_WithNullUserDetail() {

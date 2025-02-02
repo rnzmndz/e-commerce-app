@@ -4,13 +4,17 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.renzo.userservice.model.UserRole;
 import net.renzo.userservice.util.ValidationPatterns;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserCreateDTO {
 
     @NotNull(message = "username cannot be null")
@@ -38,4 +42,6 @@ public class UserCreateDTO {
     private UserRole role;
     private AddressDTO address;
     private ProfileDTO profile;
+
+
 }

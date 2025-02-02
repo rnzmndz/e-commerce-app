@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class UserMapperTest {
 
-    private final UserMapper userMapper = UserMapper.INSTANCE;
+    private final UserMapper userMapper = UserMapper;
 
 //    @Test
 //    void testToDTO() {

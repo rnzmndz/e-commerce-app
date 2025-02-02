@@ -1,19 +1,6 @@
 @startuml
 left to right direction
 
-interface UserService {
-    +createUser(userCreateDTO: UserCreateDTO): UserDTO
-    +getById(id: Long): UserDTO
-    +getAll(pageable: Pageable): Page<UserDTO>
-    +updateById(id: Long, userUpdateDTO: UserUpdateDTO): UserDTO
-    +deleteById(id: Long): void
-    +addAuthoritiesToUser(id: Long, authorities: Set<Authority>): UserDTO
-    +removeAuthorityFromUser(id: Long, authority: Authority): UserDTO
-    +getUserByRole(userRole: UserRole, pageable: Pageable): Page<UserListDTO>
-    +existsByUsernameOrEmail(username: String, email: String): boolean
-    +changePassword(id: Long, newPassword: String): void
-}
-
 class UserServiceImpl {
     -userRepository: UserRepository
     -authorityRepository: AuthorityRepository
@@ -35,5 +22,9 @@ class UserServiceImpl {
     +changePassword(id: Long, newPassword: String): void
 }
 
-UserService <|.. UserServiceImpl
+UserServiceImpl --> UserRepository
+UserServiceImpl --> AuthorityRepository
+UserServiceImpl --> UserCreateMapper
+UserServiceImpl --> UserMapper
+UserServiceImpl --> UserListMapper
 @enduml

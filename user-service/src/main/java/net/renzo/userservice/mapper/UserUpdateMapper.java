@@ -11,20 +11,22 @@ import java.util.Collections;
 import java.util.List;
 
 //TODO Fix this mapper
-@Mapper(componentModel = "spring", uses = {AddressMapper.class}, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring",
+        uses = {AddressMapper.class},
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserUpdateMapper {
-    UserUpdateMapper INSTANCE = Mappers.getMapper(UserUpdateMapper.class);
 
     @Mapping(target = "addresses", source = "address", qualifiedByName = "mapSingleAddressToList")
-    UserDetail toEntity(UserUpdateDTO userUpdateDTO);
+    UserDetail toEntity(UserUpdateDTO userUpdateDTO, @Context AddressMapper addressMapper);
 
     void updateEntityFromDto(UserUpdateDTO userUpdateDTO, @MappingTarget UserDetail userDetail);
 
     @Named("mapSingleAddressToList")
-    default List<Address> mapSingleAddressToList(AddressDTO addressDTO) {
+    default List<Address> mapSingleAddressToList(AddressDTO addressDTO, @Context AddressMapper addressMapper) {
         if (addressDTO == null) {
             return Collections.emptyList();
         }
-        return Collections.singletonList(AddressMapper.INSTANCE.toEntity(addressDTO));
+        return Collections.singletonList(addressMapper.toEntity(addressDTO));
     }
 }
