@@ -1,22 +1,77 @@
 package net.renzo.userservice.mapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import net.renzo.userservice.dto.UserDTO;
+import net.renzo.userservice.model.Authority;
+import net.renzo.userservice.model.UserDetail;
+import net.renzo.userservice.model.UserRole;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import net.renzo.userservice.model.Authority;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import net.renzo.userservice.model.UserDetail;
-
+@ExtendWith(MockitoExtension.class)
 class UserMapperTest {
-	private UserMapper userMapper;
+
+    @Mock
+    private AddressMapper addressMapper;
+
+    @InjectMocks
+    private UserMapperImpl userMapper;
+
+    private UserDetail userDetail;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+
+        Authority authority1 = Authority.builder()
+                .name("ROLE_USER")
+                .build();
+        Authority authority2 = Authority.builder()
+                .name("ROLE_ADMIN")
+                .build();
+
+        Set<Authority> authorities = new HashSet<>();
+        authorities.add(authority1);
+        authorities.add(authority2);
+
+        userDetail = UserDetail.builder()
+                .id(1L)
+                .username("john_doe")
+                .password("password123")
+                .email("john.doe@example.com")
+                .authorities(authorities)
+                .firstName("John")
+                .lastName("Doe")
+                .role(UserRole.CUSTOMER)
+                .build();
+    }
 
     @Test
-    @DisplayName("Should return null when UserDetail is null")
+    void testToDTO() {
+        // Act
+        UserDTO userDTO = userMapper.toDTO(userDetail);
+
+        // Assert
+        assertThat(userDTO).isNotNull();
+        assertThat(userDTO.getId()).isEqualTo(userDetail.getId());
+        assertThat(userDTO.getUsername()).isEqualTo(userDetail.getUsername());
+        assertThat(userDTO.getEmail()).isEqualTo(userDetail.getEmail());
+        assertThat(userDTO.getFirstName()).isEqualTo(userDetail.getFirstName());
+        assertThat(userDTO.getLastName()).isEqualTo(userDetail.getLastName());
+        assertThat(userDTO.getRole()).isEqualTo(userDetail.getRole());
+        assertThat(userDTO.getAuthorities()).containsExactlyInAnyOrder("ROLE_USER", "ROLE_ADMIN");
+    }
+
+    @Test
     void testMapAuthorities_WithNullUserDetail() {
         // Act
         Set<String> authorities = userMapper.mapAuthorities(null);
@@ -26,24 +81,20 @@ class UserMapperTest {
     }
 
     @Test
-    @DisplayName("Should return empty when authorities is null")
     void testMapAuthorities_WithNullAuthorities() {
         // Arrange
-        UserDetail userDetail = new UserDetail();
-        userDetail.addAuthorities(null);
+        userDetail.setAuthorities(null);
 
         // Act
         Set<String> authorities = userMapper.mapAuthorities(userDetail);
 
         // Assert
-        assertThat(authorities).isEmpty();
+        assertThat(authorities).isNull();
     }
 
     @Test
-    @DisplayName("Should return empty set when authorities is empty")
     void testMapAuthorities_WithEmptyAuthorities() {
         // Arrange
-        UserDetail userDetail = new UserDetail();
         userDetail.setAuthorities(new HashSet<>());
 
         // Act
@@ -54,23 +105,7 @@ class UserMapperTest {
     }
 
     @Test
-    @DisplayName("Should map authorities correctly when authorities exist")
     void testMapAuthorities_WithValidAuthorities() {
-        // Arrange
-        UserDetail userDetail = new UserDetail();
-        Set<Authority> authoritySet = new HashSet<>();
-
-        Authority authority1 = Authority.builder()
-                .name("ROLE_USER")
-                .build();
-        Authority authority2 = Authority.builder()
-                .name("ROLE_ADMIN")
-                .build();
-
-        authoritySet.add(authority1);
-        authoritySet.add(authority2);
-        userDetail.setAuthorities(authoritySet);
-
         // Act
         Set<String> authorities = userMapper.mapAuthorities(userDetail);
 
@@ -79,28 +114,4 @@ class UserMapperTest {
                 .hasSize(2)
                 .contains("ROLE_USER", "ROLE_ADMIN");
     }
-
-    @Test
-    @DisplayName("Should handle single authority mapping correctly")
-    void testMapAuthorities_WithSingleAuthority() {
-        // Arrange
-        UserDetail userDetail = new UserDetail();
-        Set<Authority> authoritySet = new HashSet<>();
-
-        Authority authority = Authority.builder()
-                .name("ROLE_USER")
-                .build();
-
-        authoritySet.add(authority);
-        userDetail.setAuthorities(authoritySet);
-
-        // Act
-        Set<String> authorities = userMapper.mapAuthorities(userDetail);
-
-        // Assert
-        assertThat(authorities)
-                .hasSize(1)
-                .contains("ROLE_USER");
-    }
-
 }

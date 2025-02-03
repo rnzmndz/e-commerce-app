@@ -40,8 +40,6 @@ class UserUpdateMapperTest {
                 .zipCode("62701")
                 .build();
 
-        List<Address> addresses = Arrays.asList(address,null);
-
         Authority authority = Authority.builder()
                 .id(1L)
                 .name("ROLE_USER")
@@ -64,7 +62,7 @@ class UserUpdateMapperTest {
                 .firstName("John")
                 .lastName("Doe")
                 .role(UserRole.CUSTOMER)
-                .addresses(addresses)
+                .addresses(address)
                 .profile(profile)
                 .build();
     }

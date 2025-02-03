@@ -5,6 +5,7 @@ import net.renzo.userservice.dto.UserCreateDTO;
 import net.renzo.userservice.model.Address;
 import net.renzo.userservice.model.UserDetail;
 import org.mapstruct.*;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
@@ -15,15 +16,10 @@ import java.util.List;
                 AddressMapper.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserCreateMapper {
+    UserCreateMapper INSTANCE = Mappers.getMapper(UserCreateMapper.class);
 
-    @Mapping(target = "addresses", source = "address", qualifiedByName = "mapSingleAddressToList")
-    UserDetail toEntity(UserCreateDTO userCreateDTO, @Context AddressMapper addressMapper);
+    @Mapping(target = "addresses", ignore = true)
+    @Mapping(target = "profile", ignore = true)
+    UserDetail toEntity(UserCreateDTO dto);
 
-    @Named("mapSingleAddressToList")
-    default List<Address> mapSingleAddressToList(AddressDTO addressDTO, @Context AddressMapper addressMapper) {
-        if (addressDTO == null) {
-            return Collections.emptyList();
-        }
-        return Collections.singletonList(addressMapper.toEntity(addressDTO));
-    }
 }

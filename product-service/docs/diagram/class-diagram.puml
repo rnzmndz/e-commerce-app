@@ -1,0 +1,77 @@
+@startuml
+' Define classes
+class Product {
+  - id: String
+  - name: String
+  - description: String
+  - price: Double
+  - sku: String
+  - category: Category
+  - inventory: Inventory
+  - createdAt: LocalDateTime
+  - updatedAt: LocalDateTime
+  + getId(): String
+  + getName(): String
+  + getDescription(): String
+  + getPrice(): Double
+  + getSku(): String
+  + getCategory(): Category
+  + getInventory(): Inventory
+  + getCreatedAt(): LocalDateTime
+  + getUpdatedAt(): LocalDateTime
+  + setName(name: String): void
+  + setDescription(desc: String): void
+  + setPrice(price: Double): void
+  + setSku(sku: String): void
+  + setCategory(category: Category): void
+  + setInventory(inventory: Inventory): void
+}
+
+class Category {
+  - id: String
+  - name: String
+  - description: String
+  + getId(): String
+  + getName(): String
+  + getDescription(): String
+  + setName(name: String): void
+  + setDescription(desc: String): void
+}
+
+class Inventory {
+  - id: String
+  - productId: String
+  - quantity: Integer
+  - location: String
+  + getId(): String
+  + getProductId(): String
+  + getQuantity(): Integer
+  + getLocation(): String
+  + setProductId(productId: String): void
+  + setQuantity(quantity: Integer): void
+  + setLocation(location: String): void
+}
+
+class ProductService {
+  + createProduct(product: Product): Product
+  + updateProduct(id: String, product: Product): Product
+  + deleteProduct(id: String): void
+  + getProductById(id: String): Product
+  + getAllProducts(): List<Product>
+  + getProductsByCategory(categoryId: String): List<Product>
+}
+
+class ProductRepository {
+  + save(product: Product): Product
+  + findById(id: String): Optional<Product>
+  + findAll(): List<Product>
+  + deleteById(id: String): void
+  + findByCategory(categoryId: String): List<Product>
+}
+
+' Define relationships
+Product "1" --> "1" Inventory : has >
+Product "1" --> "1" Category : belongs to >
+ProductService --> ProductRepository : depends on >
+
+@enduml

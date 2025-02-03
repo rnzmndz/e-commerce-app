@@ -1,9 +1,6 @@
 package net.renzo.userservice.controller;
 
-import net.renzo.userservice.exception.ErrorResponse;
-import net.renzo.userservice.exception.UserAlreadyExistsException;
-import net.renzo.userservice.exception.UserNotFoundException;
-import net.renzo.userservice.exception.ValidationErrorResponse;
+import net.renzo.userservice.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -83,5 +80,18 @@ public class RestExceptionHandler {
 
         // Return the validation error response wrapped in a ResponseEntity with HTTP status 400 (Bad Request)
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleForbiddenException(ForbiddenException exception) {
+        // Build the error response with status 403, the exception message, and the current timestamp
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(403)
+                .message(exception.getMessage())
+                .timeStamp(System.currentTimeMillis())
+                .build();
+
+        // Return the error response wrapped in a ResponseEntity with HTTP status 403 (Forbidden)
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 }

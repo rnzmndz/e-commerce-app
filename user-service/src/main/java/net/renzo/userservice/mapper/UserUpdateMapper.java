@@ -16,17 +16,18 @@ import java.util.List;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserUpdateMapper {
+    UserUpdateMapper INSTANCE = Mappers.getMapper(UserUpdateMapper.class);
 
-    @Mapping(target = "addresses", source = "address", qualifiedByName = "mapSingleAddressToList")
-    UserDetail toEntity(UserUpdateDTO userUpdateDTO, @Context AddressMapper addressMapper);
+    @Mapping(target = "addresses", source = "address"/*, qualifiedByName = "mapSingleAddressToList"*/)
+    UserDetail toEntity(UserUpdateDTO userUpdateDTO);
 
     void updateEntityFromDto(UserUpdateDTO userUpdateDTO, @MappingTarget UserDetail userDetail);
 
-    @Named("mapSingleAddressToList")
-    default List<Address> mapSingleAddressToList(AddressDTO addressDTO, @Context AddressMapper addressMapper) {
-        if (addressDTO == null) {
-            return Collections.emptyList();
-        }
-        return Collections.singletonList(addressMapper.toEntity(addressDTO));
-    }
+//    @Named("mapSingleAddressToList")
+//    default List<Address> mapSingleAddressToList(AddressDTO addressDTO, @Context AddressMapper addressMapper) {
+//        if (addressDTO == null) {
+//            return Collections.emptyList();
+//        }
+//        return Collections.singletonList(addressMapper.toEntity(addressDTO));
+//    }
 }

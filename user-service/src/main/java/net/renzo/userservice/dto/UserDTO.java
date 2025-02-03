@@ -22,7 +22,7 @@ public class UserDTO {
     private UserRole role;
     private String firstName;
     private String lastName;
-    private List<AddressDTO> addresses;
+    private AddressDTO addresses;
     private ProfileDTO profile;
     private Set<String> authorities;
     private LocalDateTime createdAt;

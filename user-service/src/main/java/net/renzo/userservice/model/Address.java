@@ -1,13 +1,18 @@
 package net.renzo.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
-@Builder
 @Entity
 @Table(name = "address")
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = "user")
+@EqualsAndHashCode(exclude = "user")
 public class Address {
 
     @Id
@@ -29,7 +34,7 @@ public class Address {
     @Column(name = "country")
     private String country;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserDetail user;
 

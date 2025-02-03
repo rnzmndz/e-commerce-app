@@ -1,13 +1,11 @@
 package net.renzo.userservice.service;
 
+import jakarta.transaction.Transactional;
 import net.renzo.userservice.dto.UserCreateDTO;
 import net.renzo.userservice.dto.UserDTO;
 import net.renzo.userservice.dto.UserListDTO;
 import net.renzo.userservice.dto.UserUpdateDTO;
-import net.renzo.userservice.mapper.UserCreateMapper;
-import net.renzo.userservice.mapper.UserListMapper;
-import net.renzo.userservice.mapper.UserMapper;
-import net.renzo.userservice.mapper.UserUpdateMapper;
+import net.renzo.userservice.mapper.*;
 import net.renzo.userservice.model.Authority;
 import net.renzo.userservice.model.UserDetail;
 import net.renzo.userservice.model.UserRole;
@@ -18,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -34,18 +33,25 @@ public class UserServiceImpl implements UserService {
     private final UserListMapper userListMapper;
     private final UserUpdateMapper userUpdateMapper;
 
+    private final AddressMapper addressMapper;
+    private final ProfileMapper profileMapper;
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository, UserCreateMapper userCreateMapper,
-                           UserMapper userMapper, UserListMapper userListMapper, UserUpdateMapper userUpdateMapper) {
+                           UserMapper userMapper, UserListMapper userListMapper, UserUpdateMapper userUpdateMapper,
+                           AddressMapper addressMapper, ProfileMapper profileMapper) {
         this.userRepository = userRepository;
         this.authorityRepository = authorityRepository;
         this.userCreateMapper = userCreateMapper;
         this.userMapper = userMapper;
         this.userListMapper = userListMapper;
         this.userUpdateMapper = userUpdateMapper;
+        this.addressMapper = addressMapper;
+        this.profileMapper = profileMapper;
     }
 
     @Override
+    @Transactional
     public UserDTO createUser(UserCreateDTO userCreateDTO) {
         // Check if a user with the same username or email already exists
         if (userRepository.existsByUsernameOrEmail(userCreateDTO.getUsername(), userCreateDTO.getEmail())) {
@@ -58,7 +64,26 @@ public class UserServiceImpl implements UserService {
 
         // Create a new UserDetail entity from the UserCreateDTO using a mapper
         UserDetail userDetail = userCreateMapper.toEntity(userCreateDTO);
+
         userDetail.addAuthorities(defaultAuthority);
+
+        // Check if the address is provided in the DTO
+        if (userCreateDTO.getAddress() != null) {
+            // Convert the address DTO to an entity and set it to the user
+            userDetail.setAddresses(addressMapper.toEntity(userCreateDTO.getAddress()));
+        }
+
+        // Check if the profile is provided in the DTO
+        if (userCreateDTO.getProfile() != null) {
+            // Convert the profile DTO to an entity and set it to the user
+            userDetail.setProfile(profileMapper.toEntity(userCreateDTO.getProfile()));
+        }
+
+        // Set the creation timestamp to the current time
+        userDetail.setCreatedAt(LocalDateTime.now());
+
+        // Set the update timestamp to the current time
+        userDetail.setUpdatedAt(LocalDateTime.now());
 
         // Save the new user to the repository
         userDetail = userRepository.save(userDetail);
@@ -87,6 +112,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO updateById(Long id, UserUpdateDTO userUpdateDTO) {
         // Find the user by id, throw an exception if not found
         UserDetail userDetail = userRepository.findById(id)
@@ -103,6 +129,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         // Find the user by id, throw an exception if not found
         UserDetail userDetail = userRepository.findById(id)
@@ -113,6 +140,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO addAuthoritiesToUser(Long id, Set<Authority> authorities) {
         // Find the user by id, throw an exception if not found
         UserDetail userDetail = userRepository.findById(id)
@@ -131,6 +159,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO removeAuthorityFromUser(Long id, Authority authority) {
         // Find the user by id, throw an exception if not found
         UserDetail userDetail = userRepository.findById(id)
@@ -166,6 +195,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void changePassword(Long id, String newPassword) {
        // Find the user by id, throw an exception if not found
         UserDetail userDetail = userRepository.findById(id)

@@ -9,59 +9,68 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+@ExtendWith(MockitoExtension.class)
 class ProfileMapperTest {
 
-    private ProfileMapper profileMapper;
+    @InjectMocks
+    private ProfileMapperImpl profileMapper;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void toDTO() {
-        //Arrange
+        // Arrange
         Profile profile = Profile.builder()
                 .bio("sample bio")
                 .profilePictureUrl("sample url")
                 .build();
 
-        //Act
+        // Act
         ProfileDTO profileDTO = profileMapper.toDTO(profile);
 
-        //Assert
-        assertThat(profile.getBio()).isEqualTo(profileDTO.getBio());
-        assertThat(profile.getProfilePictureUrl()).isEqualTo(profileDTO.getProfilePictureUrl());
-    }
-
-    @Test
-    void toEntity() {
-        //Arrange
-        ProfileDTO profileDTO = ProfileDTO.builder()
-                .bio("sample bio")
-                .profilePictureUrl("sample url")
-                .build();
-
-        //Act
-        Profile profile = profileMapper.toEntity(profileDTO);
-
-        //Assert
+        // Assert
+        assertThat(profileDTO).isNotNull();
         assertThat(profileDTO.getBio()).isEqualTo(profile.getBio());
         assertThat(profileDTO.getProfilePictureUrl()).isEqualTo(profile.getProfilePictureUrl());
     }
 
     @Test
-    void toDTO_Null() {
-        //Arrange
-        Profile profile = Profile.builder()
-                .bio(null)
-                .profilePictureUrl(null)
+    void toEntity() {
+        // Arrange
+        ProfileDTO profileDTO = ProfileDTO.builder()
+                .bio("sample bio")
+                .profilePictureUrl("sample url")
                 .build();
 
-        //Act
-        ProfileDTO profileDTO = profileMapper.toDTO(profile);
+        // Act
+        Profile profile = profileMapper.toEntity(profileDTO);
 
-        //Assert
-        assertThat(profile.getBio()).isNull();
-        assertThat(profile.getProfilePictureUrl()).isNull();
+        // Assert
+        assertThat(profile).isNotNull();
+        assertThat(profile.getBio()).isEqualTo(profileDTO.getBio());
+        assertThat(profile.getProfilePictureUrl()).isEqualTo(profileDTO.getProfilePictureUrl());
+    }
+
+    @Test
+    void toDTO_Null() {
+        // Act
+        ProfileDTO profileDTO = profileMapper.toDTO(null);
+
+        // Assert
+        assertThat(profileDTO).isNull();
+    }
+
+    @Test
+    void toEntity_Null() {
+        // Act
+        Profile profile = profileMapper.toEntity(null);
+
+        // Assert
+        assertThat(profile).isNull();
     }
 }

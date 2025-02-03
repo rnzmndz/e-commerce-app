@@ -1,5 +1,6 @@
 package net.renzo.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,13 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Data
+@Entity
+@Table(name = "user_details")
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@EqualsAndHashCode(callSuper = true)
-@Table(name = "user_details")
+@EqualsAndHashCode(callSuper = true, exclude = {"addresses", "profile"})
 public class UserDetail extends Auditable implements UserDetails {
 
     @Id
@@ -31,7 +33,9 @@ public class UserDetail extends Auditable implements UserDetails {
     @Column(name = "email",unique = true, nullable = false)
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
             name = "user_authorities",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -49,15 +53,20 @@ public class UserDetail extends Auditable implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Column(name = "address", nullable = false)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Address> addresses;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Address addresses;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Profile profile;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (authorities == null) {
+            return null;
+        }
+
         return authorities.stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                 .collect(Collectors.toList());
@@ -73,25 +82,45 @@ public class UserDetail extends Auditable implements UserDetails {
                 .collect(Collectors.toSet());
     }
 
-    public void addAddress(Address address) {
-        if (addresses == null) {
-            addresses = new ArrayList<>();
-        }
-        addresses.add(address);
-    }
 
-    public void addAuthorities(Authority authority){
-        if (authorities == null || authority == null) {
+    public void addAuthorities(Authority authority) {
+        if (authority == null) {
+            return;
+        }
+        if (authorities == null) {
             authorities = new HashSet<>();
         }
         authorities.add(authority);
     }
+
 
     public void removeAuthorities(Authority authority){
         if (authorities == null || authority == null) {
             return;
         }
         authorities.remove(authority);
+    }
+
+    public void setAddresses(Address address) {
+        if (address == null) {
+            if (this.addresses != null) {
+                this.addresses.setUser(null);
+            }
+        } else {
+            address.setUser(this);
+        }
+        this.addresses = address;
+    }
+
+    public void setProfile(Profile profile) {
+        if (profile == null) {
+            if (this.profile != null) {
+                this.profile.setUser(null);
+            }
+        } else {
+            profile.setUser(this);
+        }
+        this.profile = profile;
     }
 
     @Override

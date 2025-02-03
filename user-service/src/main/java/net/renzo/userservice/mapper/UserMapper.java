@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public interface UserMapper {
 
     @Mapping(target = "authorities", expression = "java(mapAuthorities(userDetail))")
-    @Mapping(target = "addresses", expression = "java(mapAddresses(userDetail))")
     UserDTO toDTO(UserDetail userDetail);
 
 
@@ -37,12 +36,4 @@ public interface UserMapper {
                 .collect(Collectors.toSet());
     }
 
-    default List<AddressDTO> mapAddresses(UserDetail userDetail) {
-        if(userDetail.getAddresses() == null) {
-            return Collections.emptyList();
-        }
-        return userDetail.getAddresses().stream()
-                .map(address -> Mappers.getMapper(AddressMapper.class).toDTO(address))
-                .collect(Collectors.toList());
-    }
 }

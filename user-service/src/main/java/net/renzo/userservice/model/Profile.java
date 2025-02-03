@@ -1,17 +1,18 @@
 package net.renzo.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Builder
 @Table(name = "profile")
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = "user")
+@EqualsAndHashCode(exclude = "user")
 public class Profile {
 
     @Id

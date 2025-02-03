@@ -95,16 +95,15 @@ class UserCreateMapperTest {
         assertThat(userDetail.getRole()).isEqualTo(userCreateDTO.getRole());
 
         // Address assertions
-        assertThat(userDetail.getAddresses()).hasSize(1);
-        assertThat(userDetail.getAddresses().get(0).getStreet())
+        assertThat(userDetail.getAddresses().getStreet())
                 .isEqualTo(userCreateDTO.getAddress().getStreet());
-        assertThat(userDetail.getAddresses().get(0).getCity())
+        assertThat(userDetail.getAddresses().getCity())
                 .isEqualTo(userCreateDTO.getAddress().getCity());
-        assertThat(userDetail.getAddresses().get(0).getState())
+        assertThat(userDetail.getAddresses().getState())
                 .isEqualTo(userCreateDTO.getAddress().getState());
-        assertThat(userDetail.getAddresses().get(0).getCountry())
+        assertThat(userDetail.getAddresses().getCountry())
                 .isEqualTo(userCreateDTO.getAddress().getCountry());
-        assertThat(userDetail.getAddresses().get(0).getZipCode())
+        assertThat(userDetail.getAddresses().getZipCode())
                 .isEqualTo(userCreateDTO.getAddress().getZipCode());
 
         // Profile assertions
@@ -138,7 +137,7 @@ class UserCreateMapperTest {
         assertThat(userDetail.getFirstName()).isEqualTo(userCreateDTO.getFirstName());
         assertThat(userDetail.getLastName()).isEqualTo(userCreateDTO.getLastName());
         assertThat(userDetail.getRole()).isEqualTo(userCreateDTO.getRole());
-        assertThat(userDetail.getAddresses()).isEmpty();
+        assertThat(userDetail.getAddresses()).isNull();
         assertThat(userDetail.getProfile()).isNull();
     }
 }

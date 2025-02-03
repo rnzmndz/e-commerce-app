@@ -4,9 +4,7 @@ import net.renzo.userservice.dto.UserCreateDTO;
 import net.renzo.userservice.dto.UserDTO;
 import net.renzo.userservice.dto.UserListDTO;
 import net.renzo.userservice.dto.UserUpdateDTO;
-import net.renzo.userservice.mapper.UserCreateMapper;
-import net.renzo.userservice.mapper.UserListMapper;
-import net.renzo.userservice.mapper.UserMapper;
+import net.renzo.userservice.mapper.*;
 import net.renzo.userservice.model.Authority;
 import net.renzo.userservice.model.UserDetail;
 import net.renzo.userservice.model.UserRole;
@@ -51,11 +49,20 @@ class UserServiceImplTest {
     @Mock
     private UserListMapper userListMapper;
 
+    @Mock
+    private UserUpdateMapper userUpdateMapper;
+
+    @Mock
+    private AddressMapper addressMapper;
+
+    @Mock
+    private ProfileMapper profileMapper;
+
     private UserServiceImpl userService;
 
     @BeforeEach
     void setUp() {
-        userService = new UserServiceImpl(userRepository, authorityRepository, userCreateMapper, userMapper, userListMapper);
+        userService = new UserServiceImpl(userRepository, authorityRepository, userCreateMapper, userMapper, userListMapper, userUpdateMapper, addressMapper, profileMapper);
     }
 
     @Test
