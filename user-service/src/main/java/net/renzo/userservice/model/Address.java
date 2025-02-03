@@ -12,7 +12,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "user")
-@EqualsAndHashCode(exclude = "user")
 public class Address {
 
     @Id

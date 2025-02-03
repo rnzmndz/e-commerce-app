@@ -18,10 +18,6 @@ import net.renzo.userservice.util.ValidationPatterns;
 @AllArgsConstructor
 public class AddressDTO {
 
-    /**
-     * The unique identifier for the address.
-     */
-    private Long id;
 
     /**
      * The street address.

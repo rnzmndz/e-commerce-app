@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = {"addresses", "profile"})
 public class UserDetail extends Auditable implements UserDetails {
 
     @Id

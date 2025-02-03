@@ -1,6 +1,5 @@
 package net.renzo.userservice.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "user")
-@EqualsAndHashCode(exclude = "user")
 public class Profile {
 
     @Id

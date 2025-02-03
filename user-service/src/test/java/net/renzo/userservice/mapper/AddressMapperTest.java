@@ -26,7 +26,6 @@ class AddressMapperTest {
         AddressDTO addressDTO = addressMapper.toDTO(address);
 
         // Assert
-        assertThat(addressDTO.getId()).isEqualTo(address.getId());
         assertThat(addressDTO.getStreet()).isEqualTo(address.getStreet());
         assertThat(addressDTO.getCity()).isEqualTo(address.getCity());
         assertThat(addressDTO.getState()).isEqualTo(address.getState());
@@ -37,7 +36,6 @@ class AddressMapperTest {
     void toEntity() {
         // Arrange
         AddressDTO addressDTO = AddressDTO.builder()
-                .id(1L)
                 .street("123 Main St")
                 .city("Anytown")
                 .state("Anystate")
@@ -48,7 +46,6 @@ class AddressMapperTest {
         Address address = addressMapper.toEntity(addressDTO);
 
         // Assert
-        assertThat(address.getId()).isEqualTo(addressDTO.getId());
         assertThat(address.getStreet()).isEqualTo(addressDTO.getStreet());
         assertThat(address.getCity()).isEqualTo(addressDTO.getCity());
         assertThat(address.getState()).isEqualTo(addressDTO.getState());
