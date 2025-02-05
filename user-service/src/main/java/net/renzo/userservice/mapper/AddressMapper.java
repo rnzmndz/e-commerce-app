@@ -13,4 +13,6 @@ public interface AddressMapper {
     AddressDTO toDTO(Address address);
 
     Address toEntity(AddressDTO addressDTO);
+
+    void updateEntityFromDto(AddressDTO addressDTO, Address address);
 }

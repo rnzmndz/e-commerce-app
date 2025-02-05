@@ -135,19 +135,19 @@ public class UserController {
      * @return the updated user data transfer object wrapped in a ResponseEntity
      * @throws UserNotFoundException if a user with the given ID is not found
      */
-    @PutMapping("/{id}/add-authorities")
-    ResponseEntity<UserDTO> addAuthorities(@PathVariable Long id,
-                                           @RequestBody Set<Authority> authorities){
+        @PutMapping("/{id}/add-authorities")
+        ResponseEntity<UserDTO> addAuthorities(@PathVariable Long id,
+                                               @RequestBody Set<Authority> authorities){
 
-        // Check if the user exists
-        UserDTO userDTO = checkUserExists(id);
+            // Check if the user exists
+            UserDTO userDTO = checkUserExists(id);
 
-        // Add the authorities to the user
-        userService.addAuthoritiesToUser(id, authorities);
+            // Add the authorities to the user
+            userService.addAuthoritiesToUser(id, authorities);
 
-        // Return the updated user data transfer object wrapped in a ResponseEntity
-        return ResponseEntity.ok(userDTO);
-    }
+            // Return the updated user data transfer object wrapped in a ResponseEntity
+            return ResponseEntity.ok(userDTO);
+        }
 
     /**
      * Removes an authority from a user by their ID.
@@ -177,6 +177,8 @@ public class UserController {
      * @param pageable the pagination information
      * @return a page of user data transfer objects wrapped in a ResponseEntity
      */
+
+    // TODO: Test this endpoint
     @GetMapping("/role")
     public ResponseEntity<Page<UserListDTO>> getUsersByRole(@RequestBody UserRole role,
                                                             Pageable pageable) {
@@ -202,6 +204,7 @@ public class UserController {
         return ResponseEntity.ok(userExists);
     }
 
+    // TODO There is a problem with this endpoint, fix it
     @PutMapping("/{id}/change-password")
     public ResponseEntity<Void> changePassword(@PathVariable Long id,
                                               @RequestParam String newPassword) {
