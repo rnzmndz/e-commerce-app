@@ -204,34 +204,6 @@ class UserServiceImplTest {
     }
 
     @Test
-    void addAuthoritiesToUser_ShouldAddAuthorities() {
-        // Arrange
-        Long userId = 1L;
-        UserDetail userDetail = new UserDetail();
-        Set<Authority> authorities = new HashSet<>();
-        Authority authority = new Authority();
-        authorities.add(authority);
-        UserDTO expectedUserDTO = UserDTO.builder()
-                .id(userId)
-                .username("testuser")
-                .email("test@example.com")
-                .role(UserRole.CUSTOMER)
-                .authorities(new HashSet<>())
-                .build();
-
-        when(userRepository.findById(userId)).thenReturn(Optional.of(userDetail));
-        when(userRepository.save(any(UserDetail.class))).thenReturn(userDetail);
-        lenient().when(userMapper.toDTO(any(UserDetail.class))).thenReturn(expectedUserDTO);
-
-        // Act
-        UserDTO result = userService.addAuthoritiesToUser(userId, authorities);
-
-        // Assert
-        assertNotNull(result);
-        verify(userRepository).save(any(UserDetail.class));
-    }
-
-    @Test
     void getUserByRole_ShouldReturnUsersWithSpecificRole() {
         // Arrange
         Pageable pageable = PageRequest.of(0, 10);

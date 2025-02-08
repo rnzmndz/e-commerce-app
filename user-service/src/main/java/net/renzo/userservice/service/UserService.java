@@ -4,13 +4,11 @@ import net.renzo.userservice.dto.UserCreateDTO;
 import net.renzo.userservice.dto.UserDTO;
 import net.renzo.userservice.dto.UserListDTO;
 import net.renzo.userservice.dto.UserUpdateDTO;
-import net.renzo.userservice.model.Authority;
 import net.renzo.userservice.model.UserRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Service interface for managing users.
@@ -57,24 +55,6 @@ public interface UserService {
     void deleteById(Long id);
 
     /**
-     * Adds authorities to a user.
-     *
-     * @param id the ID of the user
-     * @param authorities the set of authorities to add
-     * @return the updated user data transfer object
-     */
-    UserDTO addAuthoritiesToUser(Long id, Set<Authority> authorities);
-
-    /**
-     * Removes an authority from a user.
-     *
-     * @param id the ID of the user
-     * @param authority the authority to remove
-     * @return the updated user data transfer object
-     */
-    UserDTO removeAuthorityFromUser(Long id, Authority authority);
-
-    /**
      * Retrieves users by their role with pagination.
      *
      * @param userRole the role of the users
@@ -83,21 +63,14 @@ public interface UserService {
     Page<UserListDTO> getUserByRole(UserRole userRole, Pageable pageable);
 
     /**
-     * Checks if a user exists by their username or email.
-     *
-     * @param username the username of the user
-     * @param email the email of the user
-     * @return true if the user exists, false otherwise
-     */
-    boolean existsByUsernameOrEmail(String username, String email);
-
-    /**
      * Checks if a user exists by their username.
      *
      * @param username the username of the user
      * @return true if the user exists, false otherwise
      */
     boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 
     /**
      * Changes the password of a user.

@@ -7,7 +7,6 @@ import net.renzo.userservice.dto.UserListDTO;
 import net.renzo.userservice.dto.UserUpdateDTO;
 import net.renzo.userservice.exception.UserAlreadyExistsException;
 import net.renzo.userservice.exception.UserNotFoundException;
-import net.renzo.userservice.model.Authority;
 import net.renzo.userservice.model.UserRole;
 import net.renzo.userservice.service.UserService;
 import org.springframework.data.domain.Page;
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * REST controller for managing users.
@@ -128,49 +126,6 @@ public class UserController {
     }
 
     /**
-     * Adds authorities to a user by their ID.
-     *
-     * @param id the ID of the user
-     * @param authorities the set of authorities to be added to the user
-     * @return the updated user data transfer object wrapped in a ResponseEntity
-     * @throws UserNotFoundException if a user with the given ID is not found
-     */
-        @PutMapping("/{id}/add-authorities")
-        ResponseEntity<UserDTO> addAuthorities(@PathVariable Long id,
-                                               @RequestBody Set<Authority> authorities){
-
-            // Check if the user exists
-            UserDTO userDTO = checkUserExists(id);
-
-            // Add the authorities to the user
-            userService.addAuthoritiesToUser(id, authorities);
-
-            // Return the updated user data transfer object wrapped in a ResponseEntity
-            return ResponseEntity.ok(userDTO);
-        }
-
-    /**
-     * Removes an authority from a user by their ID.
-     *
-     * @param id the ID of the user
-     * @param authority the authority to be removed from the user
-     * @return the updated user data transfer object wrapped in a ResponseEntity
-     * @throws UserNotFoundException if a user with the given ID is not found
-     */
-    @PutMapping("/{id}/remove-authorities")
-    ResponseEntity<UserDTO> removeAuthority(@PathVariable Long id,
-                                            @RequestBody Authority authority) {
-        // Check if the user exists
-        UserDTO userDTO = checkUserExists(id);
-
-        // Remove the authority from the user
-        userService.removeAuthorityFromUser(id, authority);
-
-        // Return the updated user data transfer object wrapped in a ResponseEntity
-        return ResponseEntity.ok(userDTO);
-    }
-
-    /**
      * Retrieves users by their role with pagination.
      *
      * @param role the role of the users
@@ -178,7 +133,6 @@ public class UserController {
      * @return a page of user data transfer objects wrapped in a ResponseEntity
      */
 
-    // TODO: Test this endpoint
     @GetMapping("/role")
     public ResponseEntity<Page<UserListDTO>> getUsersByRole(@RequestBody UserRole role,
                                                             Pageable pageable) {
@@ -189,16 +143,32 @@ public class UserController {
         return ResponseEntity.ok(usersPage);
     }
 
+
     /**
      * Checks if a user with the given username exists.
      *
      * @param username the username of the user
      * @return a boolean value indicating whether the user exists wrapped in a ResponseEntity
      */
-    @GetMapping("/exists")
+    @GetMapping("/exists/{username}")
     public ResponseEntity<Boolean> checkUserExists(@RequestParam String username) {
         // Check if a user with the given username exists
         boolean userExists = userService.existsByUsername(username);
+
+        // Return a boolean value indicating whether the user exists wrapped in a ResponseEntity
+        return ResponseEntity.ok(userExists);
+    }
+
+    /**
+     * Checks if a user with the given email exists.
+     *
+     * @param email the email of the user
+     * @return a boolean value indicating whether the user exists wrapped in a ResponseEntity
+     */
+    @GetMapping("/exists/{email}")
+    public ResponseEntity<Boolean> checkUserExistsByEmail(@PathVariable String email) {
+        // Check if a user with the given email exists
+        boolean userExists = userService.existsByEmail(email);
 
         // Return a boolean value indicating whether the user exists wrapped in a ResponseEntity
         return ResponseEntity.ok(userExists);

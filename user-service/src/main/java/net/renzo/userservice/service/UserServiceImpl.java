@@ -17,9 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -54,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDTO createUser(UserCreateDTO userCreateDTO) {
         // Check if a user with the same username or email already exists
-        if (userRepository.existsByUsernameOrEmail(userCreateDTO.getUsername(), userCreateDTO.getEmail())) {
+        if (userRepository.existsByUsername(userCreateDTO.getUsername()) || userRepository.existsByEmail(userCreateDTO.getEmail())) {
             throw new IllegalArgumentException("User with the same username or email already exists");
         }
 
@@ -140,42 +138,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public UserDTO addAuthoritiesToUser(Long id, Set<Authority> authorities) {
-        // Find the user by id, throw an exception if not found
-        UserDetail userDetail = userRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
-
-        // Add the new authorities to the user
-        for (Authority authority : authorities) {
-            userDetail.addAuthorities(authority);
-        }
-
-        // Save the updated user to the repository
-        userDetail = userRepository.save(userDetail);
-
-        // Convert the updated UserDetail entity to a UserDTO using the userMapper and return it
-        return userMapper.toDTO(userDetail);
-    }
-
-    @Override
-    @Transactional
-    public UserDTO removeAuthorityFromUser(Long id, Authority authority) {
-        // Find the user by id, throw an exception if not found
-        UserDetail userDetail = userRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
-
-        // Remove the authority from the user
-        userDetail.removeAuthorities(authority);
-
-        // Save the updated user to the repository
-        userDetail = userRepository.save(userDetail);
-
-        // Convert the updated UserDetail entity to a UserDTO using the userMapper and return it
-        return userMapper.toDTO(userDetail);
-    }
-
-    @Override
     public Page<UserListDTO> getUserByRole(UserRole userRole, Pageable pageable) {
         // Fetch users by role with pagination
         Page<UserDetail> userDetailsPage = userRepository.findByRole(userRole, pageable);
@@ -183,15 +145,15 @@ public class UserServiceImpl implements UserService {
         // Convert the Page<UserDetail> to Page<UserDTO> using the userMapper
         return userDetailsPage.map(userListMapper::toDTO);
     }
-
-    @Override
-    public boolean existsByUsernameOrEmail(String username, String email) {
-        return userRepository.existsByUsernameOrEmail(username, email);
-    }
-
+// TODO: Add documentation
     @Override
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     @Override

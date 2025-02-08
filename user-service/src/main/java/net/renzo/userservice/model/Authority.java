@@ -34,4 +34,12 @@ public class Authority implements GrantedAuthority {
     public String getAuthority() {
         return this.name;
     }
+
+    public void addUser(UserDetail user) {
+        this.users.add(user);
+    }
+
+    public void removeUser(UserDetail user) {
+        this.users.remove(user);
+    }
 }

@@ -6,7 +6,6 @@ import net.renzo.userservice.dto.UserListDTO;
 import net.renzo.userservice.dto.UserUpdateDTO;
 import net.renzo.userservice.exception.UserAlreadyExistsException;
 import net.renzo.userservice.exception.UserNotFoundException;
-import net.renzo.userservice.model.Authority;
 import net.renzo.userservice.model.UserRole;
 import net.renzo.userservice.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,10 +23,9 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -151,31 +149,6 @@ class UserControllerTest {
     }
 
     @Test
-    void addAuthorities_Success() {
-        when(userService.getById(anyLong())).thenReturn(Optional.of(userDTO));
-        Authority defaultAuthority = new Authority();
-        defaultAuthority.setName("ROLE_USER");
-        Set<Authority> authorities = Set.of(defaultAuthority);
-
-        ResponseEntity<UserDTO> response = userController.addAuthorities(1L, authorities);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(userService).addAuthoritiesToUser(1L, authorities);
-    }
-
-    @Test
-    void removeAuthority_Success() {
-        when(userService.getById(anyLong())).thenReturn(Optional.of(userDTO));
-        Authority defaultAuthority = new Authority();
-        defaultAuthority.setName("ROLE_USER");
-
-        ResponseEntity<UserDTO> response = userController.removeAuthority(1L, defaultAuthority);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(userService).removeAuthorityFromUser(1L, defaultAuthority);
-    }
-
-    @Test
     void getUsersByRole_Success() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<UserListDTO> userPage = new PageImpl<>(List.of(userListDTO));
@@ -197,6 +170,17 @@ class UserControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isTrue();
         verify(userService).existsByUsername("testuser");
+    }
+
+    @Test
+    void checkUserExistsByEmail_ReturnsTrue() {
+        when(userService.existsByEmail(anyString())).thenReturn(true);
+
+        ResponseEntity<Boolean> response = userController.checkUserExistsByEmail("johndoe@sample.com");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isTrue();
+        verify(userService).existsByEmail("johndoe@sample.com");
     }
 
     @Test

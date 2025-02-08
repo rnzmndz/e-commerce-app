@@ -3,6 +3,7 @@ package net.renzo.userservice.mapper;
 import net.renzo.userservice.dto.AddressDTO;
 import net.renzo.userservice.model.Address;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
@@ -14,5 +15,5 @@ public interface AddressMapper {
 
     Address toEntity(AddressDTO addressDTO);
 
-    void updateEntityFromDto(AddressDTO addressDTO, Address address);
+    void updateEntityFromDto(AddressDTO addressDTO, @MappingTarget Address address);
 }
