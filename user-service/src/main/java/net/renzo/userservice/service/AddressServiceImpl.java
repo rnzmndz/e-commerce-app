@@ -1,5 +1,6 @@
 package net.renzo.userservice.service;
 
+import jakarta.transaction.Transactional;
 import net.renzo.userservice.dto.AddressDTO;
 import net.renzo.userservice.exception.AddressNotFoundException;
 import net.renzo.userservice.exception.UserNotFoundException;
@@ -22,7 +23,7 @@ public class AddressServiceImpl implements AddressService{
         this.addressMapper = addressMapper;
     }
 
-   /**
+    /**
      * Updates an existing address with new details.
      *
      * @param addressId the ID of the address to be updated
@@ -31,11 +32,12 @@ public class AddressServiceImpl implements AddressService{
      * @throws IllegalArgumentException if the addressId or addressDTO is null
      * @throws AddressNotFoundException if the address is not found
      */
+    @Transactional
     @Override
     public AddressDTO updateAddress(Long addressId, AddressDTO addressDTO) {
         // Validate the input parameters
         if (addressId == null || addressDTO == null) {
-            throw new IllegalArgumentException("Address ID and AddressDTO must not be null");
+            throw new AddressNotFoundException("Address ID and AddressDTO must not be null");
         }
 
         // Retrieve the existing address from the AddressRepository
@@ -59,11 +61,12 @@ public class AddressServiceImpl implements AddressService{
      * @throws UserNotFoundException if the user is not found
      * @throws AddressNotFoundException if the address is not found for the user
      */
+    @Transactional
     @Override
     public AddressDTO getAddressByUserId(Long userId) {
         // Validate the input parameter
         if (userId == null) {
-            throw new IllegalArgumentException("User ID must not be null");
+            throw new UserNotFoundException("User ID must not be null");
         }
 
         // Retrieve the address associated with the user

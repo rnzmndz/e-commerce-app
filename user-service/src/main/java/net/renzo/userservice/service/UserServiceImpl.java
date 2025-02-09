@@ -5,6 +5,9 @@ import net.renzo.userservice.dto.UserCreateDTO;
 import net.renzo.userservice.dto.UserDTO;
 import net.renzo.userservice.dto.UserListDTO;
 import net.renzo.userservice.dto.UserUpdateDTO;
+import net.renzo.userservice.exception.AuthorityNotFoundException;
+import net.renzo.userservice.exception.InvalidPasswordException;
+import net.renzo.userservice.exception.UserNotFoundException;
 import net.renzo.userservice.mapper.*;
 import net.renzo.userservice.model.Authority;
 import net.renzo.userservice.model.UserDetail;
@@ -53,12 +56,12 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(UserCreateDTO userCreateDTO) {
         // Check if a user with the same username or email already exists
         if (userRepository.existsByUsername(userCreateDTO.getUsername()) || userRepository.existsByEmail(userCreateDTO.getEmail())) {
-            throw new IllegalArgumentException("User with the same username or email already exists");
+            throw new UserNotFoundException("User with the same username or email already exists");
         }
 
         // Fetch the default authority (ROLE_USER) from the database
         Authority defaultAuthority = authorityRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Default authority not found in the database."));
+                .orElseThrow(() -> new AuthorityNotFoundException("Default authority not found in the database."));
 
         // Create a new UserDetail entity from the UserCreateDTO using a mapper
         UserDetail userDetail = userCreateMapper.toEntity(userCreateDTO);
@@ -94,7 +97,7 @@ public class UserServiceImpl implements UserService {
     public Optional<UserDTO> getById(Long id) {
         // Find the user by id, throw an exception if not found
         UserDetail userDetail = userRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         // Convert the UserDetail entity to a UserDTO and return it
         return Optional.of(userMapper.toDTO(userDetail));
@@ -114,7 +117,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateById(Long id, UserUpdateDTO userUpdateDTO) {
         // Find the user by id, throw an exception if not found
         UserDetail userDetail = userRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         // Update the user details with the new data from userUpdateDTO
         userUpdateMapper.updateEntityFromDto(userUpdateDTO, userDetail);
@@ -131,7 +134,7 @@ public class UserServiceImpl implements UserService {
     public void deleteById(Long id) {
         // Find the user by id, throw an exception if not found
         UserDetail userDetail = userRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         // Delete the user from the repository
         userRepository.delete(userDetail);
@@ -145,27 +148,44 @@ public class UserServiceImpl implements UserService {
         // Convert the Page<UserDetail> to Page<UserDTO> using the userMapper
         return userDetailsPage.map(userListMapper::toDTO);
     }
-// TODO: Add documentation
+    /**
+     * Checks if a user with the given username exists in the repository.
+     *
+     * @param username the username to check for existence
+     * @return true if a user with the given username exists, false otherwise
+     */
     @Override
     public boolean existsByUsername(String username) {
+        // Call the repository method to check if the username exists
         return userRepository.existsByUsername(username);
     }
 
+    /**
+     * Checks if a user with the given email exists in the repository.
+     *
+     * @param email the email to check for existence
+     * @return true if a user with the given email exists, false otherwise
+     */
     @Override
     public boolean existsByEmail(String email) {
+        // Call the repository method to check if the email exists
         return userRepository.existsByEmail(email);
     }
-
     @Override
     @Transactional
     public void changePassword(Long id, String newPassword) {
-       // Find the user by id, throw an exception if not found
+        // Find the user by id, throw an exception if not found
         UserDetail userDetail = userRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         // Validate the new password to prevent SQL injection
         if (newPassword.matches(".*([';\\-\\-]).*")) {
-            throw new IllegalArgumentException("Invalid password: potential SQL injection detected");
+            throw new InvalidPasswordException("Invalid password: potential SQL injection detected");
+        }
+
+        // Validate the new password if it the same as the old password
+        if (newPassword.equals(userDetail.getPassword())) {
+            throw new InvalidPasswordException("Invalid password: new password cannot be the same as the old password");
         }
 
         // Update the user's password

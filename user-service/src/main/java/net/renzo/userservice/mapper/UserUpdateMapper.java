@@ -1,14 +1,9 @@
 package net.renzo.userservice.mapper;
 
-import net.renzo.userservice.dto.AddressDTO;
 import net.renzo.userservice.dto.UserUpdateDTO;
-import net.renzo.userservice.model.Address;
 import net.renzo.userservice.model.UserDetail;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-
-import java.util.Collections;
-import java.util.List;
 
 //TODO Fix this mapper
 @Mapper(componentModel = "spring",

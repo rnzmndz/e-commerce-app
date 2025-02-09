@@ -66,11 +66,16 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        // Check if the user exists
-        UserDTO userDTO = checkUserExists(id);
+        // Retrieve the user by ID
+        Optional<UserDTO> userDTO = userService.getById(id);
+
+        // Check if the user is present, if not throw an exception
+        if (userDTO.isEmpty()) {
+            throw new UserNotFoundException("User with ID " + id + " not found");
+        }
 
         // Return the user data transfer object wrapped in a ResponseEntity
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(userDTO.get());
     }
 
     /**
@@ -99,8 +104,13 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id,
                                               @Valid @RequestBody UserUpdateDTO userUpdateDTO) {
-        // Check if the user exists
-        checkUserExists(id);
+        // Retrieve the user by ID
+        Optional<UserDTO> userDTO = userService.getById(id);
+
+        // Check if the user is present, if not throw an exception
+        if (userDTO.isEmpty()) {
+            throw new UserNotFoundException("User with ID " + id + " not found");
+        }
 
         // Update the user and return the updated user data transfer object wrapped in a ResponseEntity
         return ResponseEntity.ok(userService.updateById(id, userUpdateDTO));
@@ -115,8 +125,13 @@ public class UserController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        // Check if the user exists
-        checkUserExists(id);
+        // Retrieve the user by ID
+        Optional<UserDTO> userDTO = userService.getById(id);
+
+        // Check if the user is present, if not throw an exception
+        if (userDTO.isEmpty()) {
+            throw new UserNotFoundException("User with ID " + id + " not found");
+        }
 
         // Delete the user by ID
         userService.deleteById(id);
@@ -134,7 +149,7 @@ public class UserController {
      */
 
     @GetMapping("/role")
-    public ResponseEntity<Page<UserListDTO>> getUsersByRole(@RequestBody UserRole role,
+    public ResponseEntity<Page<UserListDTO>> getUsersByRole(@RequestParam UserRole role,
                                                             Pageable pageable) {
         // Call the userService to get users by role with pagination
         Page<UserListDTO> usersPage = userService.getUserByRole(role, pageable);
@@ -150,8 +165,8 @@ public class UserController {
      * @param username the username of the user
      * @return a boolean value indicating whether the user exists wrapped in a ResponseEntity
      */
-    @GetMapping("/exists/{username}")
-    public ResponseEntity<Boolean> checkUserExists(@RequestParam String username) {
+    @GetMapping("/exists/username/{username}")
+    public ResponseEntity<Boolean> checkUserExists(@PathVariable String username) {
         // Check if a user with the given username exists
         boolean userExists = userService.existsByUsername(username);
 
@@ -165,7 +180,7 @@ public class UserController {
      * @param email the email of the user
      * @return a boolean value indicating whether the user exists wrapped in a ResponseEntity
      */
-    @GetMapping("/exists/{email}")
+    @GetMapping("/exists/email/{email}")
     public ResponseEntity<Boolean> checkUserExistsByEmail(@PathVariable String email) {
         // Check if a user with the given email exists
         boolean userExists = userService.existsByEmail(email);
@@ -174,29 +189,29 @@ public class UserController {
         return ResponseEntity.ok(userExists);
     }
 
-    // TODO There is a problem with this endpoint, fix it
-    @PutMapping("/{id}/change-password")
-    public ResponseEntity<Void> changePassword(@PathVariable Long id,
-                                              @RequestParam String newPassword) {
-        // Check if the user exists
-        checkUserExists(id);
+    /**
+ * Changes the password of a user by their ID.
+ *
+ * @param id the ID of the user
+ * @param newPassword the new password for the user
+ * @return a ResponseEntity with no content
+ * @throws UserNotFoundException if a user with the given ID is not found
+ */
+@PutMapping("/{id}/change-password")
+public ResponseEntity<Void> changePassword(@PathVariable Long id,
+                                          @RequestParam String newPassword) {
+    // Retrieve the user by ID
+    Optional<UserDTO> userDTO = userService.getById(id);
 
-        // Change the password of the user
-        userService.changePassword(id, newPassword);
-
-        // Return a ResponseEntity with no content
-        return ResponseEntity.noContent().build();
+    // Check if the user is present, if not throw an exception
+    if (userDTO.isEmpty()) {
+        throw new UserNotFoundException("User with ID " + id + " not found");
     }
 
-    private UserDTO checkUserExists(Long id) {
-        // Retrieve the user by ID
-        Optional<UserDTO> userDTO = userService.getById(id);
+    // Change the password of the user
+    userService.changePassword(id, newPassword);
 
-        // Check if the user is present, if not throw an exception
-        if (userDTO.isEmpty()) {
-            throw new UserNotFoundException("User with ID " + id + " not found");
-        }
-
-        return userDTO.get();
-    }
+    // Return a ResponseEntity with no content
+    return ResponseEntity.noContent().build();
+}
 }

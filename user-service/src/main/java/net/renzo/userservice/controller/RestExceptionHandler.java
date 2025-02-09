@@ -57,6 +57,44 @@ public class RestExceptionHandler {
     }
 
     /**
+     * Handles AddressNotFoundException.
+     *
+     * @param exception the exception thrown when a address is not found
+     * @return a ResponseEntity containing the error response with status 404 (Not Found)
+     */
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleAddressNotFoundException(AddressNotFoundException exception) {
+        // Build the error response with status 404, the exception message, and the current timestamp
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(404)
+                .message(exception.getMessage())
+                .timeStamp(System.currentTimeMillis())
+                .build();
+
+        // Return the error response wrapped in a ResponseEntity with HTTP status 404 (Not Found)
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Handles AuthorityNotFoundException.
+     *
+     * @param exception the exception thrown when a authority is not found
+     * @return a ResponseEntity containing the error response with status 404 (Not Found)
+     */
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleAuthorityNotFoundException(AuthorityNotFoundException exception) {
+        // Build the error response with status 404, the exception message, and the current timestamp
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(404)
+                .message(exception.getMessage())
+                .timeStamp(System.currentTimeMillis())
+                .build();
+
+        // Return the error response wrapped in a ResponseEntity with HTTP status 404 (Not Found)
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    /**
      * Handles validation exceptions for method arguments.
      *
      * @param ex the MethodArgumentNotValidException thrown when validation fails

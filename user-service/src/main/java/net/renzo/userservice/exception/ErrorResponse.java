@@ -5,11 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @Builder
-public class ErrorResponse extends RuntimeException {
+public class ErrorResponse{
     private int status;
     private String message;
     private long timeStamp;

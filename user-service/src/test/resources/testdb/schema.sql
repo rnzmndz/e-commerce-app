@@ -37,6 +37,7 @@ CREATE TABLE profile (
 CREATE TABLE user_authorities (
     user_id BIGINT NOT NULL,
     authority_id BIGINT NOT NULL,
+    date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, authority_id),
     FOREIGN KEY (user_id) REFERENCES user_details(id),
     FOREIGN KEY (authority_id) REFERENCES authority(id)

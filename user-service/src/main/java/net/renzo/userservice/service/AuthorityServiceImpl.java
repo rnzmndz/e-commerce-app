@@ -1,5 +1,6 @@
 package net.renzo.userservice.service;
 
+import jakarta.transaction.Transactional;
 import net.renzo.userservice.dto.AuthorityDTO;
 import net.renzo.userservice.exception.AuthorityNotFoundException;
 import net.renzo.userservice.exception.UserNotFoundException;
@@ -8,10 +9,12 @@ import net.renzo.userservice.model.Authority;
 import net.renzo.userservice.model.UserDetail;
 import net.renzo.userservice.repository.AuthorityRepository;
 import net.renzo.userservice.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
 public class AuthorityServiceImpl implements AuthorityService {
 
     private final AuthorityRepository authorityRepository;
@@ -31,6 +34,7 @@ public class AuthorityServiceImpl implements AuthorityService {
      * @param authorityDTO the DTO containing the details of the authority to be created
      * @return the created Authority as a DTO
      */
+    @Transactional
     @Override
     public AuthorityDTO createAuthority(AuthorityDTO authorityDTO) {
         // Convert the AuthorityDTO to an Authority entity
@@ -68,7 +72,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     public Set<String> getAuthoritiesByUser(Long userId) {
         // Find all Authority entities associated with the given user ID
-        return authorityRepository.findAllByUserId(userId).stream()
+        return authorityRepository.findAllByUsers_Id(userId).stream()
                 // Map each Authority entity to its name
                 .map(Authority::getName)
                 // Collect the names into a set
@@ -98,6 +102,7 @@ public class AuthorityServiceImpl implements AuthorityService {
      * @return the updated Authority as a DTO
      * @throws AuthorityNotFoundException if the authority with the given ID is not found
      */
+    @Transactional
     @Override
     public AuthorityDTO updateAuthority(Long id, AuthorityDTO authorityDTO) {
         // Find the existing Authority by ID
@@ -120,6 +125,7 @@ public class AuthorityServiceImpl implements AuthorityService {
      * @param id the ID of the authority to delete
      * @throws AuthorityNotFoundException if the authority with the given ID is not found
      */
+    @Transactional
     @Override
     public void deleteAuthority(Long id) {
         // Find the existing Authority by ID
@@ -138,6 +144,7 @@ public class AuthorityServiceImpl implements AuthorityService {
      * @throws UserNotFoundException      if the user with the given ID is not found
      * @throws AuthorityNotFoundException if any of the authorities are not found
      */
+    @Transactional
     @Override
     public void addAuthorities(Long userId, Set<String> authorities) {
         // Find the user by ID
@@ -163,6 +170,7 @@ public class AuthorityServiceImpl implements AuthorityService {
      * @throws UserNotFoundException      if the user with the given ID is not found
      * @throws AuthorityNotFoundException if any of the authorities are not found
      */
+    @Transactional
     @Override
     public void removeAuthorities(Long userId, Set<String> authorities) {
         // Find the user by ID

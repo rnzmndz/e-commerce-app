@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -23,7 +24,8 @@ public class Authority implements GrantedAuthority {
     private String name;
 
     @ManyToMany(mappedBy = "authorities")
-    private Set<UserDetail> users;
+    @Builder.Default
+    private Set<UserDetail> users = new HashSet<>();
 
     public Authority(long id, String name) {
         this.id = id;

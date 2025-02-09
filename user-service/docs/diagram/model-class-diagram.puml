@@ -1,0 +1,77 @@
+@startuml
+
+' Class styles
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classBackgroundColor #EEEBDC
+skinparam classBorderColor #A80036
+
+' UserDetail Class
+class UserDetail {
+  + Long id
+  + String username
+  + String password
+  + String email
+  + Set<Authority> authorities
+  + String firstName
+  + String lastName
+  + UserRole role
+  + Address addresses
+  + Profile profile
+  + Collection<? extends GrantedAuthority> getAuthorities()
+  + Set<String> getAuthorityName()
+  + void addAuthorities(Authority authority)
+  + void removeAuthorities(Authority authority)
+  + void setAddresses(Address address)
+  + void setProfile(Profile profile)
+}
+
+' Address Class
+class Address {
+  + Long id
+  + String street
+  + String city
+  + String state
+  + String zipCode
+  + String country
+  + UserDetail user
+  + String getCompleteAddress()
+}
+
+' Profile Class
+class Profile {
+  + Long id
+  + String bio
+  + String profilePictureUrl
+  + UserDetail user
+}
+
+' Authority Class
+class Authority {
+  + Long id
+  + String name
+  + Set<UserDetail> users
+  + String getAuthority()
+  + void addUser(UserDetail user)
+  + void removeUser(UserDetail user)
+}
+
+' UserRole Enum
+enum UserRole {
+  ADMIN
+  CUSTOMER
+}
+
+' Relationships
+UserDetail "1" -- "1" Address : has
+UserDetail "1" -- "1" Profile : has
+UserDetail "1" -- "0..*" Authority : has
+Authority "0..*" -- "0..*" UserDetail : has
+
+' Notes
+note left of UserDetail: Implements UserDetails interface
+note left of Authority: Used for Spring Security
+note bottom of Address: Represents user's addresses
+note bottom of Profile: User's additional information
+
+@enduml

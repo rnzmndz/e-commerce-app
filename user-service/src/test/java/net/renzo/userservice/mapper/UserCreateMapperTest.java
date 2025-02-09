@@ -95,6 +95,7 @@ class UserCreateMapperTest {
         assertThat(userDetail.getRole()).isEqualTo(userCreateDTO.getRole());
 
         // Address assertions
+        assertThat(userDetail.getAddresses()).isNotNull();
         assertThat(userDetail.getAddresses().getStreet())
                 .isEqualTo(userCreateDTO.getAddress().getStreet());
         assertThat(userDetail.getAddresses().getCity())

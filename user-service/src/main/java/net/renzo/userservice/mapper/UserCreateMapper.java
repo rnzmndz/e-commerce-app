@@ -18,8 +18,8 @@ import java.util.List;
 public interface UserCreateMapper {
     UserCreateMapper INSTANCE = Mappers.getMapper(UserCreateMapper.class);
 
-    @Mapping(target = "addresses", ignore = true)
-    @Mapping(target = "profile", ignore = true)
+    @Mapping(target = "addresses", source = "dto.address")
+    @Mapping(target = "profile", source = "dto.profile")
     UserDetail toEntity(UserCreateDTO dto);
 
 }

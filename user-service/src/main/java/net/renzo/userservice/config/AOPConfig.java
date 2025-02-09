@@ -9,8 +9,4 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 public class AOPConfig {
 
-//    @Bean
-//    public LoggingAspect loggingAspect(LoggingAspect loggingAspect) {
-//        return new LoggingAspect();
-//    }
 }

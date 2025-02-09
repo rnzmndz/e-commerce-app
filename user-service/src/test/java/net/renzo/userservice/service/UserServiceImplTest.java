@@ -84,7 +84,8 @@ class UserServiceImplTest {
         Authority defaultAuthority = new Authority();
         defaultAuthority.setName("ROLE_USER");
 
-        when(userRepository.existsByUsernameOrEmail(anyString(), anyString())).thenReturn(false);
+        when(userRepository.existsByUsername(anyString())).thenReturn(false);
+        when(userRepository.existsByEmail(anyString())).thenReturn(false);
         when(authorityRepository.findByName("ROLE_USER")).thenReturn(Optional.of(defaultAuthority));
         lenient().when(userCreateMapper.toEntity(any(UserCreateDTO.class))).thenReturn(userDetail);
         when(userRepository.save(any(UserDetail.class))).thenReturn(userDetail);
@@ -106,7 +107,8 @@ class UserServiceImplTest {
         createDTO.setUsername("existinguser");
         createDTO.setEmail("test@example.com");
 
-        when(userRepository.existsByUsernameOrEmail(anyString(), anyString())).thenReturn(true);
+        lenient().when(userRepository.existsByUsername(anyString())).thenReturn(true);
+        lenient().when(userRepository.existsByEmail(anyString())).thenReturn(true);
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> userService.createUser(createDTO));
