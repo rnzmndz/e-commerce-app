@@ -1,5 +1,12 @@
 package net.renzo.userservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import net.renzo.userservice.dto.UserCreateDTO;
 import net.renzo.userservice.dto.UserDTO;
@@ -26,6 +33,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("api/v1/users")
+@Tag(name = "User", description = "User API")
 public class UserController {
 
     private final UserService userService;
@@ -46,6 +54,12 @@ public class UserController {
      * @return the created user data transfer object wrapped in a ResponseEntity
      * @throws UserAlreadyExistsException if a user with the given username already exists
      */
+    @Operation(summary = "Create a new user", description = "Create a new user with the provided details.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully created user"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data", content = @Content),
+            @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
+    })
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserCreateDTO userCreateDTO) {
         // Check if a user with the given username already exists
@@ -64,8 +78,14 @@ public class UserController {
      * @return the user data transfer object wrapped in a ResponseEntity
      * @throws UserNotFoundException if a user with the given ID is not found
      */
+    @Operation(summary = "Get user by ID", description = "Retrieve the details of a user by their ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved user"),
+            @ApiResponse(responseCode = "400", description = "Invalid user ID supplied", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> getUserById(@Parameter(description = "ID of the user to retrieve", required = true) @PathVariable Long id) {
         // Retrieve the user by ID
         Optional<UserDTO> userDTO = userService.getById(id);
 
@@ -84,6 +104,10 @@ public class UserController {
      * @param pageable the pagination information
      * @return a page of user data transfer objects wrapped in a ResponseEntity
      */
+    @Operation(summary = "Get all users", description = "Retrieve a paginated list of all users.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of users")
+    })
     @GetMapping
     public ResponseEntity<Page<UserListDTO>> getAllUsers(Pageable pageable) {
         // Call the userService to get all users with pagination
@@ -101,8 +125,14 @@ public class UserController {
      * @return the updated user data transfer object wrapped in a ResponseEntity
      * @throws UserNotFoundException if a user with the given ID is not found
      */
+    @Operation(summary = "Update user by ID", description = "Update the details of a user by their ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated user"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id,
+    public ResponseEntity<UserDTO> updateUser(@Parameter(description = "ID of the user to update", required = true) @PathVariable Long id,
                                               @Valid @RequestBody UserUpdateDTO userUpdateDTO) {
         // Retrieve the user by ID
         Optional<UserDTO> userDTO = userService.getById(id);
@@ -123,8 +153,14 @@ public class UserController {
      * @return a ResponseEntity with no content
      * @throws UserNotFoundException if a user with the given ID is not found
      */
+    @Operation(summary = "Delete user by ID", description = "Delete a user by their ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully deleted user"),
+            @ApiResponse(responseCode = "400", description = "Invalid user ID supplied", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@Parameter(description = "ID of the user to delete", required = true) @PathVariable Long id) {
         // Retrieve the user by ID
         Optional<UserDTO> userDTO = userService.getById(id);
 
@@ -148,8 +184,16 @@ public class UserController {
      * @return a page of user data transfer objects wrapped in a ResponseEntity
      */
 
+    @Operation(summary = "Get users by role", description = "Retrieve a paginated list of users by their role.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of users by role")
+    })
     @GetMapping("/role")
-    public ResponseEntity<Page<UserListDTO>> getUsersByRole(@RequestParam UserRole role,
+    public ResponseEntity<Page<UserListDTO>> getUsersByRole(@Parameter(description = "Role of the users to retrieve", required = true)
+                                                            @RequestParam UserRole role,
+                                                            @Parameter(description = "Pagination information",
+                                                                    schema = @Schema(implementation = Pageable.class,
+                                                                            example = "{\"page\":0,\"size\":10,\"sort\":[\"username,asc\"]}"))
                                                             Pageable pageable) {
         // Call the userService to get users by role with pagination
         Page<UserListDTO> usersPage = userService.getUserByRole(role, pageable);
@@ -165,8 +209,13 @@ public class UserController {
      * @param username the username of the user
      * @return a boolean value indicating whether the user exists wrapped in a ResponseEntity
      */
+    @Operation(summary = "Check if user exists by username", description = "Check if a user with the given username exists.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully checked user existence"),
+            @ApiResponse(responseCode = "400", description = "Invalid username supplied", content = @Content)
+    })
     @GetMapping("/exists/username/{username}")
-    public ResponseEntity<Boolean> checkUserExists(@PathVariable String username) {
+    public ResponseEntity<Boolean> checkUserExists(@Parameter(description = "Username of the user to check", required = true) @PathVariable String username) {
         // Check if a user with the given username exists
         boolean userExists = userService.existsByUsername(username);
 
@@ -180,8 +229,13 @@ public class UserController {
      * @param email the email of the user
      * @return a boolean value indicating whether the user exists wrapped in a ResponseEntity
      */
+    @Operation(summary = "Check if user exists by email", description = "Check if a user with the given email exists.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully checked user existence"),
+            @ApiResponse(responseCode = "400", description = "Invalid email supplied", content = @Content)
+    })
     @GetMapping("/exists/email/{email}")
-    public ResponseEntity<Boolean> checkUserExistsByEmail(@PathVariable String email) {
+    public ResponseEntity<Boolean> checkUserExistsByEmail(@Parameter(description = "Email of the user to check", required = true) @PathVariable String email) {
         // Check if a user with the given email exists
         boolean userExists = userService.existsByEmail(email);
 
@@ -190,28 +244,34 @@ public class UserController {
     }
 
     /**
- * Changes the password of a user by their ID.
- *
- * @param id the ID of the user
- * @param newPassword the new password for the user
- * @return a ResponseEntity with no content
- * @throws UserNotFoundException if a user with the given ID is not found
- */
-@PutMapping("/{id}/change-password")
-public ResponseEntity<Void> changePassword(@PathVariable Long id,
-                                          @RequestParam String newPassword) {
-    // Retrieve the user by ID
-    Optional<UserDTO> userDTO = userService.getById(id);
+     * Changes the password of a user by their ID.
+     *
+     * @param id the ID of the user
+     * @param newPassword the new password for the user
+     * @return a ResponseEntity with no content
+     * @throws UserNotFoundException if a user with the given ID is not found
+     */
+    @Operation(summary = "Change user password", description = "Change the password of a user by their ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully changed password"),
+            @ApiResponse(responseCode = "400", description = "Invalid user ID or password supplied", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
+    @PutMapping("/{id}/change-password")
+    public ResponseEntity<Void> changePassword(@Parameter(description = "ID of the user to change password", required = true) @PathVariable Long id,
+                                               @Parameter(description = "New password for the user", required = true) @RequestParam String newPassword) {
+        // Retrieve the user by ID
+        Optional<UserDTO> userDTO = userService.getById(id);
 
-    // Check if the user is present, if not throw an exception
-    if (userDTO.isEmpty()) {
-        throw new UserNotFoundException("User with ID " + id + " not found");
+        // Check if the user is present, if not throw an exception
+        if (userDTO.isEmpty()) {
+            throw new UserNotFoundException("User with ID " + id + " not found");
+        }
+
+        // Change the password of the user
+        userService.changePassword(id, newPassword);
+
+        // Return a ResponseEntity with no content
+        return ResponseEntity.noContent().build();
     }
-
-    // Change the password of the user
-    userService.changePassword(id, newPassword);
-
-    // Return a ResponseEntity with no content
-    return ResponseEntity.noContent().build();
-}
 }

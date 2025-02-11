@@ -5,7 +5,6 @@ import net.renzo.userservice.model.UserDetail;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-//TODO Fix this mapper
 @Mapper(componentModel = "spring",
         uses = {AddressMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -13,16 +12,9 @@ import org.mapstruct.factory.Mappers;
 public interface UserUpdateMapper {
     UserUpdateMapper INSTANCE = Mappers.getMapper(UserUpdateMapper.class);
 
-    @Mapping(target = "addresses", source = "address"/*, qualifiedByName = "mapSingleAddressToList"*/)
+    @Mapping(target = "addresses", source = "address")
     UserDetail toEntity(UserUpdateDTO userUpdateDTO);
 
     void updateEntityFromDto(UserUpdateDTO userUpdateDTO, @MappingTarget UserDetail userDetail);
 
-//    @Named("mapSingleAddressToList")
-//    default List<Address> mapSingleAddressToList(AddressDTO addressDTO, @Context AddressMapper addressMapper) {
-//        if (addressDTO == null) {
-//            return Collections.emptyList();
-//        }
-//        return Collections.singletonList(addressMapper.toEntity(addressDTO));
-//    }
 }

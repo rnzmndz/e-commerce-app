@@ -32,7 +32,6 @@ package net.renzo.userservice.controller;
                 @ApiResponse(responseCode = "200", description = "Successfully retrieved address",
                              links = @Link(name = "self", operationId = "getAddressByUserId",
                                            parameters = @LinkParameter(name = "id", expression = "$request.path.id"))),
-                @ApiResponse(responseCode = "400", description = "Invalid user ID supplied", content = @Content),
                 @ApiResponse(responseCode = "404", description = "Address not found", content = @Content)
         })
         @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

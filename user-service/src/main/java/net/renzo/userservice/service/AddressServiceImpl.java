@@ -71,7 +71,7 @@ public class AddressServiceImpl implements AddressService{
 
         // Retrieve the address associated with the user
         Address address = addressRepository.findByUserId(userId)
-                .orElseThrow(() -> new AddressNotFoundException("Address not found for user"));
+                .orElseThrow(() -> new AddressNotFoundException("Address not found"));
 
         // Return the retrieved address
         return addressMapper.toDTO(address);
