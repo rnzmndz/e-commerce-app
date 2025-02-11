@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -33,7 +34,7 @@ class AddressControllerTest {
         AddressDTO addressDTO = new AddressDTO();
         when(addressService.getAddressByUserId(anyLong())).thenReturn(addressDTO);
 
-        ResponseEntity<AddressDTO> response = addressController.getAddressByUserId(1L);
+        ResponseEntity<EntityModel<AddressDTO>> response = addressController.getAddressByUserId(1L);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(addressDTO, response.getBody());
@@ -44,7 +45,7 @@ class AddressControllerTest {
         AddressDTO addressDTO = new AddressDTO();
         when(addressService.updateAddress(anyLong(), any(AddressDTO.class))).thenReturn(addressDTO);
 
-        ResponseEntity<AddressDTO> response = addressController.updateAddress(1L, addressDTO);
+        ResponseEntity<EntityModel<AddressDTO>> response = addressController.updateAddress(1L, addressDTO);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(addressDTO, response.getBody());
