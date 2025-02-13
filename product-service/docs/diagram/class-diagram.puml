@@ -1,77 +1,86 @@
 @startuml
-' Define classes
-class Product {
-  - id: String
-  - name: String
-  - description: String
-  - price: Double
-  - sku: String
-  - category: Category
-  - inventory: Inventory
-  - createdAt: LocalDateTime
-  - updatedAt: LocalDateTime
-  + getId(): String
-  + getName(): String
-  + getDescription(): String
-  + getPrice(): Double
-  + getSku(): String
-  + getCategory(): Category
-  + getInventory(): Inventory
-  + getCreatedAt(): LocalDateTime
-  + getUpdatedAt(): LocalDateTime
-  + setName(name: String): void
-  + setDescription(desc: String): void
-  + setPrice(price: Double): void
-  + setSku(sku: String): void
-  + setCategory(category: Category): void
-  + setInventory(inventory: Inventory): void
+package "Product Service" {
+    class Product {
+        +Long id
+        +String name
+        +String description
+        +String sku
+        +Category category
+        +Brand brand
+        +Set<ProductImage> images
+        +Set<ProductVariant> variants
+        +Set<ProductAttribute> attributes
+        +Set<ProductReview> reviews
+        +LocalDateTime createdAt
+        +LocalDateTime updatedAt
+    }
+
+    class Category {
+        +Long id
+        +String name
+        +String description
+        +Category parentCategory
+        +Set<Category> subCategories
+    }
+
+    class Brand {
+        +Long id
+        +String name
+        +String description
+        +String logoUrl
+    }
+
+    class ProductImage {
+        +Long id
+        +String imageUrl
+        +boolean isPrimary
+    }
+
+    class ProductVariant {
+        +Long id
+        +String variantName
+        +Price price
+        +int stockQuantity
+        +Set<ProductAttribute> attributes
+    }
+
+    class ProductAttribute {
+        +Long id
+        +String key
+        +String value
+    }
+
+    class ProductReview {
+        +Long id
+        +int rating
+        +String comment
+        +UserDetail user
+        +LocalDateTime createdAt
+    }
+
+    class Price {
+        +Long id
+        +double amount
+        +String currency
+        +LocalDateTime effectiveDate
+    }
+
+    class UserDetail {
+        +Long id
+        +String username
+        +String email
+    }
+
+    ' Relationships
+    Product "1" *-- "1" Category : belongs to
+    Product "1" *-- "1" Brand : belongs to
+    Product "1" *-- "0..*" ProductImage : has
+    Product "1" *-- "0..*" ProductVariant : has
+    Product "1" *-- "0..*" ProductAttribute : has
+    Product "1" *-- "0..*" ProductReview : has
+    ProductVariant "1" *-- "1" Price : has
+    ProductVariant "1" *-- "0..*" ProductAttribute : has
+    Category "1" *-- "0..*" Category : parent-sub relationship
+    ProductReview "1" *-- "1" UserDetail : created by
 }
-
-class Category {
-  - id: String
-  - name: String
-  - description: String
-  + getId(): String
-  + getName(): String
-  + getDescription(): String
-  + setName(name: String): void
-  + setDescription(desc: String): void
-}
-
-class Inventory {
-  - id: String
-  - productId: String
-  - quantity: Integer
-  - location: String
-  + getId(): String
-  + getProductId(): String
-  + getQuantity(): Integer
-  + getLocation(): String
-  + setProductId(productId: String): void
-  + setQuantity(quantity: Integer): void
-  + setLocation(location: String): void
-}
-
-class ProductService {
-  + createProduct(product: Product): Product
-  + updateProduct(id: String, product: Product): Product
-  + deleteProduct(id: String): void
-  + getProductById(id: String): Product
-  + getAllProducts(): List<Product>
-  + getProductsByCategory(categoryId: String): List<Product>
-}
-
-class ProductRepository {
-  + save(product: Product): Product
-  + findById(id: String): Optional<Product>
-  + findAll(): List<Product>
-  + deleteById(id: String): void
-  + findByCategory(categoryId: String): List<Product>
-}
-
-' Define relationships
-Product "1" --> "1" Inventory : has >
-Product "1" --> "1" Category : belongs to >
-ProductService --> ProductRepository : depends on >
-
 @enduml
