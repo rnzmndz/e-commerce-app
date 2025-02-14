@@ -23,5 +23,10 @@ public class Brand {
     private String description;
 
     @Column(name = "logo")
-    private String logo;d
+    private String logo;
+
+    @OneToOne(mappedBy = "brand", cascade = {CascadeType.PERSIST, CascadeType.MERGE
+            , CascadeType.DETACH, CascadeType.REFRESH},
+            fetch = FetchType.LAZY)
+    private Product product;
 }

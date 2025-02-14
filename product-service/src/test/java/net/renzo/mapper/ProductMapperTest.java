@@ -6,12 +6,31 @@ import net.renzo.dto.ProductDetailDTO;
 import net.renzo.model.Brand;
 import net.renzo.model.Category;
 import net.renzo.model.Product;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 class ProductMapperTest {
 
-    private final ProductMapper mapper = Mappers.getMapper(ProductMapper.class);
+    @InjectMocks
+    private ProductMapperImpl mapper;
+
+    @Mock
+    private ProductImageMapper productImageMapper;
+
+    @Mock
+    private ProductAttributeMapper productAttributeMapper;
+
+    @Mock
+    private ProductReviewMapper productReviewMapper;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void testToDto() {
@@ -55,31 +74,4 @@ class ProductMapperTest {
         assertEquals(dto.getBrandName(), product.getBrand().getName());
     }
 
-    @Test
-    void testUpdateEntity() {
-        ProductDetailDTO dto = new ProductDetailDTO();
-        dto.setId(1L);
-        dto.setName("Smartphone");
-        dto.setDescription("A high-end smartphone with 128GB storage.");
-        dto.setSku("SKU12345");
-        dto.setCategoryName("Electronics");
-        dto.setBrandName("Apple");
-
-        Product product = new Product();
-        product.setId(2L);
-        product.setName("Old Phone");
-        product.setDescription("An old phone with 64GB storage.");
-        product.setSku("SKU54321");
-        product.setCategory(Category.builder().id(2L).name("Old Electronics").description("Old electronic devices").build());
-        product.setBrand(Brand.builder().id(2L).name("Samsung").build());
-
-        mapper.updateEntity(dto, product);
-
-        assertEquals(dto.getId(), product.getId());
-        assertEquals(dto.getName(), product.getName());
-        assertEquals(dto.getDescription(), product.getDescription());
-        assertEquals(dto.getSku(), product.getSku());
-        assertEquals(dto.getCategoryName(), product.getCategory().getName());
-        assertEquals(dto.getBrandName(), product.getBrand().getName());
-    }
 }

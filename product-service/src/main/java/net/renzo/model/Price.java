@@ -22,6 +22,11 @@ public class Price extends Auditable{
     @Column(name = "currency", nullable = false)
     private String currency;
 
+    @OneToOne(mappedBy = "price",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
+            fetch = FetchType.LAZY)
+    private ProductVariant productVariant;
+
 //    @Column(name = "effective_date", nullable = false)
 //    private String effectiveDate;
 }

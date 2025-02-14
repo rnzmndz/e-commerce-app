@@ -21,4 +21,12 @@ public class ProductAttribute extends Auditable{
 
     @Column(name = "value", nullable = false)
     private String value;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_variant_id")
+    private ProductVariant productVariant;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 }

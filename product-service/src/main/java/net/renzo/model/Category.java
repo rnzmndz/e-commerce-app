@@ -3,6 +3,8 @@ package net.renzo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -25,4 +27,9 @@ public class Category extends Auditable{
     @ManyToOne
     @JoinColumn(name = "sub_category_id")
     private Category subCategory;
+
+    @ManyToMany(mappedBy = "categories",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            fetch = FetchType.LAZY)
+    private Set<Product> products;
 }

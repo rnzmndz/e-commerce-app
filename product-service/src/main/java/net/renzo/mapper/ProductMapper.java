@@ -20,6 +20,4 @@ public interface ProductMapper {
     @Mapping(source = "categoryName", target = "category.name")
     @Mapping(source = "brandName", target = "brand.name")
     Product toEntity(ProductDetailDTO productDetailDTO);
-
-    void updateEntity(ProductDetailDTO productDetailDTO, @MappingTarget Product product);
 }

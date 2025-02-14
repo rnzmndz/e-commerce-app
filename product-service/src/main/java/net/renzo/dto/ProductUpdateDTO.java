@@ -22,19 +22,13 @@ public class ProductUpdateDTO {
     @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "Name cannot contain special characters")
     private String name;
 
+    @Schema(description = "The SKU of the product", example = "SKU12345")
+    @NotNull(message = "SKU cannot be null")
+    @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "SKU cannot contain special characters")
+    private String sku;
+
     @Schema(description = "The description of the product", example = "A high-end gaming laptop")
     @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN_WITH_SPACE, message = "Description cannot contain special characters")
     private String description;
 
-    @Schema(description = "The price of the product", example = "999.99")
-    @NotNull(message = "Price cannot be null")
-    private Double price;
-
-    @Schema(description = "The name of the category", example = "Electronics")
-    @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "Category name cannot contain special characters")
-    private String categoryName;
-
-    @Schema(description = "The name of the brand", example = "BrandX")
-    @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "Brand name cannot contain special characters")
-    private String brandName;
 }

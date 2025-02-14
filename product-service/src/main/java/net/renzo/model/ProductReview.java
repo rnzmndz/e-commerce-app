@@ -22,7 +22,11 @@ public class ProductReview extends Auditable{
     @Column(name = "comment", nullable = false)
     private String comment;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_detail_id", nullable = false)
     private UserDetail userDetail;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 }

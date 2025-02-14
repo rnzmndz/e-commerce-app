@@ -27,10 +27,12 @@ public class Product extends Auditable{
     @Column(name = "sku", nullable = false, unique = true)
     private String sku;
 
-    @Column(name = "category", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     private Category category;
 
-    @Column(name = "brand", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     private Brand brand;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -39,12 +41,14 @@ public class Product extends Auditable{
     @Transient
     private ProductImage defaultImage;
 
-    @ManyToMany
-    @JoinTable(
-            name = "product_attribute",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "attribute_id")
-    )
+    @OneToMany(mappedBy = "product",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private Set<ProductVariant> variants;
+
+    @OneToMany(mappedBy = "product",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     private Set<ProductAttribute> attributes;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

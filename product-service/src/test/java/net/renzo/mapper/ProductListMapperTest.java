@@ -6,12 +6,31 @@ import net.renzo.dto.ProductListDTO;
 import net.renzo.model.Brand;
 import net.renzo.model.Category;
 import net.renzo.model.Product;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 class ProductListMapperTest {
 
-    private final ProductListMapper mapper = Mappers.getMapper(ProductListMapper.class);
+    @InjectMocks
+    private ProductListMapperImpl mapper;
+
+    @Mock
+    private ProductImageMapper productImageMapper;
+
+    @Mock
+    private ProductAttributeMapper productAttributeMapper;
+
+    @Mock
+    private ProductReviewMapper productReviewMapper;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void testToProductListDTO() {
@@ -23,7 +42,7 @@ class ProductListMapperTest {
         ProductListDTO dto = mapper.toProductListDTO(product);
 
         assertEquals("Electronics", dto.getCategoryName());
-        assertEquals("BrandName", dto.getBrandName());
+        assertEquals("Apple", dto.getBrandName());
         // Add other assertions
     }
 

@@ -29,4 +29,8 @@ public class ProductVariant extends Auditable{
 
     @Column(name = "product_attribute", nullable = false)
     private Set<ProductAttribute> attributes;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 }
