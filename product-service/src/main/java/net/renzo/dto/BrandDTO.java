@@ -5,7 +5,8 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import net.renzo.util.ValidationPatterns;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

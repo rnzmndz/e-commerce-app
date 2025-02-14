@@ -3,13 +3,11 @@ package net.renzo.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.renzo.util.ValidationPatterns;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,7 +24,7 @@ public class ProductReviewDTO {
     @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "Comment cannot contain special characters")
     private String comment;
 
-    @Schema(description = "The unique identifier of the product being reviewed.", example = "10")
-    @NotNull(message = "Product ID cannot be null")
-    private Long productId;
+    @Schema(description = "The unique identifier of the user being reviewed.", example = "10")
+    @NotNull(message = "User ID cannot be null")
+    private Long userId;
 }

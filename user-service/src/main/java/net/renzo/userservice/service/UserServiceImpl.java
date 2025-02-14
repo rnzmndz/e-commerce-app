@@ -1,10 +1,7 @@
 package net.renzo.userservice.service;
 
 import jakarta.transaction.Transactional;
-import net.renzo.userservice.dto.UserCreateDTO;
-import net.renzo.userservice.dto.UserDTO;
-import net.renzo.userservice.dto.UserListDTO;
-import net.renzo.userservice.dto.UserUpdateDTO;
+import net.renzo.userservice.dto.*;
 import net.renzo.userservice.exception.AuthorityNotFoundException;
 import net.renzo.userservice.exception.InvalidPasswordException;
 import net.renzo.userservice.exception.UserNotFoundException;
@@ -33,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserCreateMapper userCreateMapper;
     private final UserListMapper userListMapper;
     private final UserUpdateMapper userUpdateMapper;
+    private final UserBasicInfoMapper userBasicInfoMapper;
 
     private final AddressMapper addressMapper;
     private final ProfileMapper profileMapper;
@@ -40,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository, UserCreateMapper userCreateMapper,
                            UserMapper userMapper, UserListMapper userListMapper, UserUpdateMapper userUpdateMapper,
-                           AddressMapper addressMapper, ProfileMapper profileMapper) {
+                           AddressMapper addressMapper, ProfileMapper profileMapper, UserBasicInfoMapper userBasicInfoMapper) {
         this.userRepository = userRepository;
         this.authorityRepository = authorityRepository;
         this.userCreateMapper = userCreateMapper;
@@ -49,6 +47,7 @@ public class UserServiceImpl implements UserService {
         this.userUpdateMapper = userUpdateMapper;
         this.addressMapper = addressMapper;
         this.profileMapper = profileMapper;
+        this.userBasicInfoMapper = userBasicInfoMapper;
     }
 
     @Override
@@ -193,5 +192,18 @@ public class UserServiceImpl implements UserService {
 
         // Save the updated user to the repository
         userRepository.save(userDetail);
+    }
+// TODO include this in test file
+    @Override
+    public Optional<UserBasicInfoDTO> getBasicInfoById(Long id) {
+        // Find the user by id, throw an exception if not found
+        UserDetail userDetail = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+
+        // Convert the UserDetail entity to a UserBasicInfoDTO using the userBasicInfoMapper
+        UserBasicInfoDTO userBasicInfoDTO = userBasicInfoMapper.toUserBasicInfoDTO(userDetail);
+
+        // Return the UserBasicInfoDTO wrapped in an Optional
+        return Optional.of(userBasicInfoDTO);
     }
 }

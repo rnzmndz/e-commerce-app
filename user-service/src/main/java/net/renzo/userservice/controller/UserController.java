@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import net.renzo.userservice.dto.UserCreateDTO;
-import net.renzo.userservice.dto.UserDTO;
-import net.renzo.userservice.dto.UserListDTO;
-import net.renzo.userservice.dto.UserUpdateDTO;
+import net.renzo.userservice.dto.*;
 import net.renzo.userservice.exception.UserAlreadyExistsException;
 import net.renzo.userservice.exception.UserNotFoundException;
 import net.renzo.userservice.model.UserRole;
@@ -273,5 +270,32 @@ public class UserController {
 
         // Return a ResponseEntity with no content
         return ResponseEntity.noContent().build();
+    }
+//    TODO include this in test file
+/**
+     * Retrieves basic information of a user by their ID.
+     *
+     * @param id the ID of the user
+     * @return the basic information of the user wrapped in a ResponseEntity
+     * @throws UserNotFoundException if a user with the given ID is not found
+     */
+    @Operation(summary = "Get basic info by ID", description = "Retrieve the basic information of a user by their ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved user basic info"),
+            @ApiResponse(responseCode = "400", description = "Invalid user ID supplied", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
+    @GetMapping("/{id}/basic-info")
+    public ResponseEntity<UserBasicInfoDTO> getBasicInfoById(@Parameter(description = "ID of the user to retrieve basic info", required = true) @PathVariable Long id) {
+        // Retrieve the basic information of the user by ID
+        Optional<UserBasicInfoDTO> userBasicInfoDTO = userService.getBasicInfoById(id);
+
+        // Check if the user is present, if not throw an exception
+        if (userBasicInfoDTO.isEmpty()) {
+            throw new UserNotFoundException("User with ID " + id + " not found");
+        }
+
+        // Return the basic information of the user wrapped in a ResponseEntity
+        return ResponseEntity.ok(userBasicInfoDTO.get());
     }
 }

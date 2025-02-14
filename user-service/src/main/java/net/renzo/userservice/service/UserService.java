@@ -1,9 +1,6 @@
 package net.renzo.userservice.service;
 
-import net.renzo.userservice.dto.UserCreateDTO;
-import net.renzo.userservice.dto.UserDTO;
-import net.renzo.userservice.dto.UserListDTO;
-import net.renzo.userservice.dto.UserUpdateDTO;
+import net.renzo.userservice.dto.*;
 import net.renzo.userservice.model.UserRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -79,4 +76,12 @@ public interface UserService {
      * @param newPassword the new password
      */
     void changePassword(Long id, String newPassword);
+
+    /**
+         * Retrieves basic information of a user by their ID.
+         *
+         * @param id the ID of the user
+         * @return the basic information data transfer object of the user
+         */
+        Optional<UserBasicInfoDTO> getBasicInfoById(Long id);
 }

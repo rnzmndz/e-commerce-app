@@ -2,13 +2,11 @@ package net.renzo.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.renzo.util.ValidationPatterns;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +18,7 @@ public class PriceDTO {
 
     @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "Invalid characters in amount")
     @Schema(description = "Amount of the price", example = "99.99")
-    private String amount;
+    private Double amount;
 
     @Pattern(regexp = ValidationPatterns.SPECIAL_CHARACTERS_PATTERN, message = "Invalid characters in currency")
     @Schema(description = "Currency of the price", example = "USD")

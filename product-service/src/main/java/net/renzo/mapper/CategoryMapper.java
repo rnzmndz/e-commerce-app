@@ -1,0 +1,16 @@
+package net.renzo.mapper;
+
+import net.renzo.dto.CategoryDTO;
+import net.renzo.model.Category;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+
+@Mapper(componentModel = "spring")
+public interface CategoryMapper {
+
+    CategoryDTO toCategoryDTO(Category category);
+
+    Category toCategory(CategoryDTO categoryDTO);
+
+    void updateEntity(CategoryDTO categoryDTO, @MappingTarget Category category);
+}

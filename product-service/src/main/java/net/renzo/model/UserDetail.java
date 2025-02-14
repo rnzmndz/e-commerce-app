@@ -12,5 +12,13 @@ import lombok.*;
 @Table(name = "user_detail")
 public class UserDetail extends Auditable{
 
-//    TODO comeback to you later
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "user_name", nullable = false)
+    private String username;
+
+    @Column(name = "email", nullable = false)
+    private String email;
 }
