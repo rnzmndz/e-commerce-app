@@ -16,7 +16,7 @@ class CategoryMapperTest {
         category.setId(1L);
         category.setName("Electronics");
 
-        CategoryDTO categoryDTO = mapper.toCategoryDTO(category);
+        CategoryDTO categoryDTO = mapper.toDto(category);
 
         assertNotNull(categoryDTO);
         assertEquals(1L, categoryDTO.getId());
@@ -29,7 +29,7 @@ class CategoryMapperTest {
         categoryDTO.setId(1L);
         categoryDTO.setName("Electronics");
 
-        Category category = mapper.toCategory(categoryDTO);
+        Category category = mapper.toEntity(categoryDTO);
 
         assertNotNull(category);
         assertEquals(1L, category.getId());

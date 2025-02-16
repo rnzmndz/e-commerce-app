@@ -1,10 +1,10 @@
 package net.renzo.mapper;
 
+import net.renzo.dto.ProductDTO;
 import net.renzo.dto.ProductDetailDTO;
 import net.renzo.model.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring",
         uses = {ProductImageMapper.class,
@@ -15,9 +15,9 @@ public interface ProductMapper {
 
     @Mapping(source = "category.name", target = "categoryName")
     @Mapping(source = "brand.name", target = "brandName")
-    ProductDetailDTO toDto(Product product);
+    ProductDTO toDto(Product product);
 
     @Mapping(source = "categoryName", target = "category.name")
     @Mapping(source = "brandName", target = "brand.name")
-    Product toEntity(ProductDetailDTO productDetailDTO);
+    Product toEntity(ProductDTO productDetailDTO);
 }

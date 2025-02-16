@@ -18,7 +18,7 @@ class ProductAttributeMapperTest {
         productAttribute.setKey("Color");
         productAttribute.setValue("Red");
 
-        ProductAttributeDTO dto = mapper.toDTO(productAttribute);
+        ProductAttributeDTO dto = mapper.toDto(productAttribute);
 
         assertNotNull(dto);
         assertEquals(productAttribute.getId(), dto.getId());

@@ -18,7 +18,7 @@ class ProductImageMapperTest {
         productImage.setId(1L);
         productImage.setUrl("http://example.com/image.jpg");
 
-        ProductImageDTO productImageDTO = productImageMapper.toDTO(productImage);
+        ProductImageDTO productImageDTO = productImageMapper.toDto(productImage);
 
         assertNotNull(productImageDTO);
         assertEquals(1L, productImageDTO.getId());

@@ -66,5 +66,44 @@ public class Product extends Auditable{
         }
     }
 
+    public void addImage(ProductImage image) {
+        images.add(image);
+        image.setProduct(this);
+    }
+
+    private void removeImage(ProductImage image) {
+        images.remove(image);
+        image.setProduct(null);
+    }
+
+    public void addVariant(ProductVariant variant) {
+        variants.add(variant);
+        variant.setProduct(this);
+    }
+
+    private void removeVariant(ProductVariant variant) {
+        variants.remove(variant);
+        variant.setProduct(null);
+    }
+
+    public void addAttribute(ProductAttribute attribute) {
+        attributes.add(attribute);
+        attribute.setProduct(this);
+    }
+
+    private void removeAttribute(ProductAttribute attribute) {
+        attributes.remove(attribute);
+        attribute.setProduct(null);
+    }
+
+    public void addReview(ProductReview review) {
+        reviews.add(review);
+        review.setProduct(this);
+    }
+
+    private void removeReview(ProductReview review) {
+        reviews.remove(review);
+        review.setProduct(null);
+    }
 
 }

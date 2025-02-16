@@ -1,6 +1,9 @@
 package net.renzo.service;
 
 import net.renzo.dto.CategoryDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +18,7 @@ public interface CategoryService {
      * @param category the category to create
      * @return the created category
      */
-    CategoryDTO createCategory(CategoryDTO category);
+    CategoryDTO createCategory(CategoryDTO categoryDTO);
 
     /**
      * Finds a category by its ID.
@@ -38,7 +41,7 @@ public interface CategoryService {
      *
      * @return a list of all categories
      */
-    List<CategoryDTO> findAllCategories();
+    Page<CategoryDTO> findAllCategories(Pageable pageable);
 
     /**
      * Updates an existing category.

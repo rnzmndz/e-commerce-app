@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 @Component
 public interface BrandMapper {
 
-    BrandDTO toBrandDTO(Brand brand);
+    BrandDTO toDTO(Brand brand);
 
-    Brand toBrand(BrandDTO brandDTO);
+    Brand toEntity(BrandDTO brandDTO);
 
     void updateEntity(BrandDTO brandDTO, @MappingTarget Brand brand);
 }

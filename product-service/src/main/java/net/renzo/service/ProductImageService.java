@@ -34,10 +34,10 @@ public interface ProductImageService {
     /**
      * Updates a given product image.
      *
-     * @param productImage the product image to update
+     * @param productImageDTO the product image to update
      * @return the updated product image
      */
-    ProductImageDTO update(ProductImageDTO productImage);
+    ProductImageDTO update(ProductImageDTO productImageDTO);
 
     /**
      * Deletes a product image by its ID.

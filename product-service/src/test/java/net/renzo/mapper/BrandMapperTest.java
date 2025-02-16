@@ -20,7 +20,7 @@ class BrandMapperTest {
         brand.setName("Test Brand");
 
         // Act
-        BrandDTO brandDTO = brandMapper.toBrandDTO(brand);
+        BrandDTO brandDTO = brandMapper.toDTO(brand);
 
         // Assert
         assertNotNull(brandDTO);
@@ -36,7 +36,7 @@ class BrandMapperTest {
         brandDTO.setName("Test Brand");
 
         // Act
-        Brand brand = brandMapper.toBrand(brandDTO);
+        Brand brand = brandMapper.toEntity(brandDTO);
 
         // Assert
         assertNotNull(brand);

@@ -23,7 +23,7 @@ class PriceMapperTest {
         price.setId(1L);
         price.setAmount(100.0);
 
-        PriceDTO priceDTO = priceMapper.toDTO(price);
+        PriceDTO priceDTO = priceMapper.toDto(price);
 
         assertNotNull(priceDTO);
         assertEquals(1L, priceDTO.getId());

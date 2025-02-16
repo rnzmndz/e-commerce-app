@@ -16,7 +16,7 @@ public interface ProductService {
      * @param product the product to create
      * @return the created product
      */
-    ProductDTO createProduct(ProductDTO product);
+    ProductDTO createProduct(ProductDTO productDTO);
 
     /**
      * Finds a product by its ID.

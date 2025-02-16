@@ -8,7 +8,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface ProductImageMapper {
 
-    ProductImageDTO toDTO(ProductImage productImage);
+    ProductImageDTO toDto(ProductImage productImage);
 
     ProductImage toEntity(ProductImageDTO productImageDTO);
 

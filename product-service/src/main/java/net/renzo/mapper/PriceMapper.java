@@ -8,7 +8,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface PriceMapper {
 
-    PriceDTO toDTO(Price price);
+    PriceDTO toDto(Price price);
 
     Price toEntity(PriceDTO priceDTO);
 
