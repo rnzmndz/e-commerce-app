@@ -39,11 +39,11 @@ public class ProductDetailDTO {
     private String brandName;
 
     @Schema(description = "The default image of the product.")
-    private ProductImageDTO defaultImage;
+    private ImageDTO defaultImage;
 
     @Schema(description = "The attributes of the product.")
-    private Set<ProductAttributeDTO> attributes;
+    private Set<AttributeDTO> attributes;
 
     @Schema(description = "The reviews of the product.")
-    private Set<ProductReviewDTO> reviews;
+    private Set<ReviewDTO> reviews;
 }

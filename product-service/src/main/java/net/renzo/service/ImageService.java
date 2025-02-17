@@ -1,12 +1,12 @@
 package net.renzo.service;
 
-import net.renzo.dto.ProductImageDTO;
+import net.renzo.dto.ImageDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface ProductImageService {
+public interface ImageService {
 
     /**
      * Saves a given product image.
@@ -14,7 +14,7 @@ public interface ProductImageService {
      * @param productImage the product image to save
      * @return the saved product image
      */
-    ProductImageDTO save(ProductImageDTO productImage);
+    ImageDTO save(ImageDTO productImage);
 
     /**
      * Finds a product image by its ID.
@@ -22,22 +22,22 @@ public interface ProductImageService {
      * @param id the ID of the product image
      * @return an Optional containing the found product image, or empty if not found
      */
-    Optional<ProductImageDTO> findById(Long id);
+    Optional<ImageDTO> findById(Long id);
 
     /**
      * Finds all product images.
      *
      * @return a list of all product images
      */
-    Page<ProductImageDTO> findAll(Pageable pageable);
+    Page<ImageDTO> findAll(Pageable pageable);
 
     /**
      * Updates a given product image.
      *
-     * @param productImageDTO the product image to update
+     * @param imageDTO the product image to update
      * @return the updated product image
      */
-    ProductImageDTO update(ProductImageDTO productImageDTO);
+    ImageDTO update(ImageDTO imageDTO);
 
     /**
      * Deletes a product image by its ID.

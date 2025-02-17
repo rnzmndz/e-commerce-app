@@ -23,7 +23,7 @@ public class ProductListDTO {
     private String sku;
 
     @Schema(description = "The default image of the product.")
-    private ProductImageDTO defaultImage;
+    private ImageDTO defaultImage;
 
     @Schema(description = "The category name of the product.", example = "Electronics")
     private String categoryName;

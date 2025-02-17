@@ -1,10 +1,10 @@
 package net.renzo.service;
 
-import net.renzo.dto.ProductImageDTO;
+import net.renzo.dto.ImageDTO;
 import net.renzo.exception.ProductImageNotFoundException;
 import net.renzo.mapper.ProductImageMapper;
-import net.renzo.model.ProductImage;
-import net.renzo.repository.ProductImageRepository;
+import net.renzo.model.Image;
+import net.renzo.repository.ImageRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,42 +13,42 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-public class ProductImageServiceImpl implements ProductImageService{
+public class ImageServiceImpl implements ImageService {
 
-    private final ProductImageRepository productImageRepository;
+    private final ImageRepository imageRepository;
     private final ProductImageMapper productImageMapper;
 
-    public ProductImageServiceImpl(ProductImageRepository productImageRepository, ProductImageMapper productImageMapper) {
-        this.productImageRepository = productImageRepository;
+    public ImageServiceImpl(ImageRepository imageRepository, ProductImageMapper productImageMapper) {
+        this.imageRepository = imageRepository;
         this.productImageMapper = productImageMapper;
     }
     @Override
     @Transactional
-    public ProductImageDTO save(ProductImageDTO productImageDTO) {
+    public ImageDTO save(ImageDTO imageDTO) {
         // Convert ProductImageDTO to ProductImage entity
-        ProductImage productImage = productImageMapper.toEntity(productImageDTO);
+        Image image = productImageMapper.toEntity(imageDTO);
 
         // Save the ProductImage entity to the repository
-        productImage = productImageRepository.save(productImage);
+        image = imageRepository.save(image);
 
         // Convert the saved ProductImage entity back to ProductImageDTO
-        return productImageMapper.toDto(productImage);
+        return productImageMapper.toDto(image);
     }
 
     @Override
-    public Optional<ProductImageDTO> findById(Long id) {
+    public Optional<ImageDTO> findById(Long id) {
         // Retrieve the ProductImage entity by id, throw exception if not found
-        ProductImage productImage = productImageRepository.findById(id)
+        Image image = imageRepository.findById(id)
                 .orElseThrow(() -> new ProductImageNotFoundException("Product image not found"));
 
         // Convert the ProductImage entity to ProductImageDTO and return it wrapped in an Optional
-        return Optional.of(productImageMapper.toDto(productImage));
+        return Optional.of(productImageMapper.toDto(image));
     }
 
     @Override
-    public Page<ProductImageDTO> findAll(Pageable pageable) {
+    public Page<ImageDTO> findAll(Pageable pageable) {
         // Retrieve all ProductImage entities from the repository
-        Page<ProductImage> productImages = productImageRepository.findAll(pageable);
+        Page<Image> productImages = imageRepository.findAll(pageable);
 
         // Convert the list of ProductImage entities to a list of ProductImageDTOs
         return productImages.map(productImageMapper::toDto);
@@ -56,28 +56,28 @@ public class ProductImageServiceImpl implements ProductImageService{
 
     @Override
     @Transactional
-    public ProductImageDTO update(ProductImageDTO productImageDTO) {
+    public ImageDTO update(ImageDTO imageDTO) {
         // Retrieve the existing ProductImage entity by id, throw exception if not found
-        ProductImage existingProductImage = productImageRepository.findById(productImageDTO.getId())
+        Image existingImage = imageRepository.findById(imageDTO.getId())
                 .orElseThrow(() -> new ProductImageNotFoundException("Product image not found"));
 
         // Update the existing ProductImage entity with values from the DTO
-        productImageMapper.updateEntity(productImageDTO, existingProductImage);
+        productImageMapper.updateEntity(imageDTO, existingImage);
 
         // Save the updated ProductImage entity to the repository
-        existingProductImage = productImageRepository.save(existingProductImage);
+        existingImage = imageRepository.save(existingImage);
 
         // Convert the updated ProductImage entity back to ProductImageDTO
-        return productImageMapper.toDto(existingProductImage);
+        return productImageMapper.toDto(existingImage);
     }
 
     @Override
     public void deleteById(Long id) {
         // Retrieve the existing ProductImage entity by id, throw exception if not found
-        ProductImage existingProductImage = productImageRepository.findById(id)
+        Image existingImage = imageRepository.findById(id)
                 .orElseThrow(() -> new ProductImageNotFoundException("Product image not found"));
 
         // Delete the ProductImage entity from the repository
-        productImageRepository.delete(existingProductImage);
+        imageRepository.delete(existingImage);
     }
 }

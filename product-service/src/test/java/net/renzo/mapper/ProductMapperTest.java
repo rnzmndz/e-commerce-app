@@ -2,6 +2,7 @@ package net.renzo.mapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import net.renzo.dto.ProductDTO;
 import net.renzo.dto.ProductDetailDTO;
 import net.renzo.model.Brand;
 import net.renzo.model.Category;
@@ -42,7 +43,7 @@ class ProductMapperTest {
         product.setCategory(Category.builder().id(1L).name("Electronics").description("Electronic devices").build());
         product.setBrand(Brand.builder().id(1L).name("Apple").build());
 
-        ProductDetailDTO dto = mapper.toDto(product);
+        ProductDTO dto = mapper.toDto(product);
 
         assertNotNull(dto);
         assertEquals(product.getId(), dto.getId());
@@ -55,7 +56,7 @@ class ProductMapperTest {
 
     @Test
     void testToEntity() {
-        ProductDetailDTO dto = new ProductDetailDTO();
+        ProductDTO dto = new ProductDTO();
         dto.setId(1L);
         dto.setName("Smartphone");
         dto.setDescription("A high-end smartphone with 128GB storage.");

@@ -39,14 +39,14 @@ public class ProductCreateDTO {
     private BrandDTO brand;
 
     @Schema(description = "The default image of the product.")
-    private Set<ProductImageDTO> images;
+    private Set<ImageDTO> images;
 
     @Schema(description = "The default variant of the product.")
-    private Set<ProductVariantDTO> variants;
+    private Set<VariantDTO> variants;
 
     @Schema(description = "The default attribute of the product.")
-    private Set<ProductAttributeDTO> attributes;
+    private Set<AttributeDTO> attributes;
 
     @Schema(description = "The default review of the product.")
-    private Set<ProductReviewDTO> reviews;
+    private Set<ReviewDTO> reviews;
 }

@@ -36,28 +36,28 @@ public class Product extends Auditable{
     private Brand brand;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ProductImage> images;
+    private Set<Image> images;
 
     @Transient
-    private ProductImage defaultImage;
+    private Image defaultImage;
 
     @OneToMany(mappedBy = "product",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    private Set<ProductVariant> variants;
+    private Set<Variant> variants;
 
     @OneToMany(mappedBy = "product",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    private Set<ProductAttribute> attributes;
+    private Set<Attribute> attributes;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ProductReview> reviews;
+    private Set<Review> reviews;
 
     @PostLoad
     private void setDefaultImage() {
         if (images != null) {
-            for (ProductImage image : images) {
+            for (Image image : images) {
                 if (image.getIsPrimary()) {
                     this.defaultImage = image;
                     break;
@@ -66,42 +66,42 @@ public class Product extends Auditable{
         }
     }
 
-    public void addImage(ProductImage image) {
+    public void addImage(Image image) {
         images.add(image);
         image.setProduct(this);
     }
 
-    private void removeImage(ProductImage image) {
+    private void removeImage(Image image) {
         images.remove(image);
         image.setProduct(null);
     }
 
-    public void addVariant(ProductVariant variant) {
+    public void addVariant(Variant variant) {
         variants.add(variant);
         variant.setProduct(this);
     }
 
-    private void removeVariant(ProductVariant variant) {
+    private void removeVariant(Variant variant) {
         variants.remove(variant);
         variant.setProduct(null);
     }
 
-    public void addAttribute(ProductAttribute attribute) {
+    public void addAttribute(Attribute attribute) {
         attributes.add(attribute);
         attribute.setProduct(this);
     }
 
-    private void removeAttribute(ProductAttribute attribute) {
+    private void removeAttribute(Attribute attribute) {
         attributes.remove(attribute);
         attribute.setProduct(null);
     }
 
-    public void addReview(ProductReview review) {
+    public void addReview(Review review) {
         reviews.add(review);
         review.setProduct(this);
     }
 
-    private void removeReview(ProductReview review) {
+    private void removeReview(Review review) {
         reviews.remove(review);
         review.setProduct(null);
     }

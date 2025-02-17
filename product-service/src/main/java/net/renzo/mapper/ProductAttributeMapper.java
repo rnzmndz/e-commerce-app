@@ -1,16 +1,16 @@
 package net.renzo.mapper;
 
-import net.renzo.dto.ProductAttributeDTO;
-import net.renzo.model.ProductAttribute;
+import net.renzo.dto.AttributeDTO;
+import net.renzo.model.Attribute;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ProductAttributeMapper {
 
-    ProductAttributeDTO toDto(ProductAttribute productAttribute);
+    AttributeDTO toDto(Attribute attribute);
 
-    ProductAttribute toEntity(ProductAttributeDTO productAttributeDTO);
+    Attribute toEntity(AttributeDTO attributeDTO);
 
-    void updateEntity(ProductAttributeDTO productAttributeDTO, @MappingTarget ProductAttribute productAttribute);
+    void updateEntity(AttributeDTO attributeDTO, @MappingTarget Attribute attribute);
 }

@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "product_variant")
-public class ProductVariant extends Auditable{
+public class Variant extends Auditable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class ProductVariant extends Auditable{
     private Integer stock;
 
     @Column(name = "product_attribute", nullable = false)
-    private Set<ProductAttribute> attributes;
+    private Set<Attribute> attributes;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

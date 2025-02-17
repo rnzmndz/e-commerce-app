@@ -1,17 +1,17 @@
 package net.renzo.mapper;
 
-import net.renzo.dto.ProductImageDTO;
-import net.renzo.model.ProductImage;
+import net.renzo.dto.ImageDTO;
+import net.renzo.model.Image;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ProductImageMapper {
 
-    ProductImageDTO toDto(ProductImage productImage);
+    ImageDTO toDto(Image image);
 
-    ProductImage toEntity(ProductImageDTO productImageDTO);
+    Image toEntity(ImageDTO imageDTO);
 
 
-    void updateEntity(ProductImageDTO productImageDTO, @MappingTarget ProductImage productImage);
+    void updateEntity(ImageDTO imageDTO, @MappingTarget Image image);
 }

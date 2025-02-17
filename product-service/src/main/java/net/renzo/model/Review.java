@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "product_review")
-public class ProductReview extends Auditable{
+public class Review extends Auditable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

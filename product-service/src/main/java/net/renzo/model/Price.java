@@ -25,7 +25,7 @@ public class Price extends Auditable{
     @OneToOne(mappedBy = "price",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
             fetch = FetchType.LAZY)
-    private ProductVariant productVariant;
+    private Variant variant;
 
 //    @Column(name = "effective_date", nullable = false)
 //    private String effectiveDate;

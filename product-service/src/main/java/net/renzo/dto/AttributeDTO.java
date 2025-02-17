@@ -10,7 +10,7 @@ import net.renzo.util.ValidationPatterns;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductAttributeDTO {
+public class AttributeDTO {
 
     @Schema(description = "The unique identifier of the product attribute.", example = "1")
     private Long id;

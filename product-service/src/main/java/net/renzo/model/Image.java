@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "product_image")
-public class ProductImage extends Auditable{
+public class Image extends Auditable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

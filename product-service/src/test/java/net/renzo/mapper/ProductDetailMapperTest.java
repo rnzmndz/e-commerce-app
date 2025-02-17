@@ -1,20 +1,14 @@
 package net.renzo.mapper;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
 
-import net.renzo.dto.ProductAttributeDTO;
 import net.renzo.dto.ProductDetailDTO;
-import net.renzo.dto.ProductImageDTO;
-import net.renzo.dto.ProductReviewDTO;
 import net.renzo.model.Brand;
 import net.renzo.model.Category;
 import net.renzo.model.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

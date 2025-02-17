@@ -1,23 +1,21 @@
 package net.renzo.service;
 
-import net.renzo.dto.ProductVariantDTO;
+import net.renzo.dto.VariantDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 /**
  * Service interface for managing product variants.
  */
-public interface ProductVariantService {
+public interface VariantService {
 
     /**
      * Creates a new product variant.
      *
-     * @param productVariantDTO the product variant data transfer object
+     * @param variantDTO the product variant data transfer object
      * @return the created product variant data transfer object
      */
-    ProductVariantDTO createProductVariant(ProductVariantDTO productVariantDTO);
+    VariantDTO createProductVariant(VariantDTO variantDTO);
 
     /**
      * Retrieves a product variant by its ID.
@@ -25,7 +23,7 @@ public interface ProductVariantService {
      * @param id the ID of the product variant
      * @return the product variant data transfer object
      */
-    ProductVariantDTO getProductVariantById(Long id);
+    VariantDTO getProductVariantById(Long id);
 
     /**
      * Retrieves product variants by product ID with pagination.
@@ -34,7 +32,7 @@ public interface ProductVariantService {
      * @param pageable  the pagination information
      * @return a page of product variant data transfer objects
      */
-    Page<ProductVariantDTO> getProductVariantsByProductId(Long productId, Pageable pageable);
+    Page<VariantDTO> getProductVariantsByProductId(Long productId, Pageable pageable);
 
     /**
      * Retrieves all product variants with pagination.
@@ -42,16 +40,16 @@ public interface ProductVariantService {
      * @param pageable the pagination information
      * @return a page of product variant data transfer objects
      */
-    Page<ProductVariantDTO> getAllProductVariants(Pageable pageable);
+    Page<VariantDTO> getAllProductVariants(Pageable pageable);
 
     /**
      * Updates an existing product variant.
      *
      * @param id                the ID of the product variant to update
-     * @param productVariantDTO the updated product variant data transfer object
+     * @param variantDTO the updated product variant data transfer object
      * @return the updated product variant data transfer object
      */
-    ProductVariantDTO updateProductVariant(Long id, ProductVariantDTO productVariantDTO);
+    VariantDTO updateProductVariant(Long id, VariantDTO variantDTO);
 
     /**
      * Deletes a product variant by its ID.

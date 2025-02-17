@@ -10,21 +10,18 @@ import org.mapstruct.ReportingPolicy;
         uses = {CategoryMapper.class,
         BrandMapper.class,
         ProductImageMapper.class,
-        ProductVariantMapper.class,
+        VariantMapper.class,
         ProductAttributeMapper.class,
         ProductReviewMapper.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ProductCreateMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "category", source = "category")
     @Mapping(target = "brand", source = "brand")
-    @Mapping(target = "productImages", source = "images")
-    @Mapping(target = "productVariants", source = "variants")
-    @Mapping(target = "productAttributes", source = "attributes")
-    @Mapping(target = "productReviews", source = "reviews")
+    @Mapping(target = "images", source = "images")
+    @Mapping(target = "variants", source = "variants")
+    @Mapping(target = "attributes", source = "attributes")
+    @Mapping(target = "reviews", source = "reviews")
     Product toEntity(ProductCreateDTO productCreateDTO);
 
 }

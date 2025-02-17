@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductVariantDTO {
+public class VariantDTO {
     @Schema(description = "Unique identifier of the product variant", example = "1")
     @NotNull(message = "Id should not be null")
     private Long id;
@@ -32,5 +32,5 @@ public class ProductVariantDTO {
 
     @Schema(description = "Attributes of the product variant")
     @NotNull(message = "Attributes should not be null")
-    private Set<ProductAttributeDTO> attributes;
+    private Set<AttributeDTO> attributes;
 }

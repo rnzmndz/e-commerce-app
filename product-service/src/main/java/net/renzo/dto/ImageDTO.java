@@ -1,6 +1,8 @@
 package net.renzo.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
@@ -8,8 +10,10 @@ import net.renzo.util.ValidationPatterns;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Schema(description = "Data Transfer Object for Product Image")
-public class ProductImageDTO {
+public class ImageDTO {
 
     @Schema(description = "The unique identifier of the product image.", example = "1")
     private Long id;

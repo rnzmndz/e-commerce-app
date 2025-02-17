@@ -24,5 +24,5 @@ public class UserDetail extends Auditable{
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private ProductReview productReview;
+    private Review review;
 }

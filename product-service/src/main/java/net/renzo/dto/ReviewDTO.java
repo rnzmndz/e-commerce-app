@@ -11,7 +11,7 @@ import net.renzo.util.ValidationPatterns;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductReviewDTO {
+public class ReviewDTO {
 
     @Schema(description = "The unique identifier of the product review.", example = "1")
     private Long id;
