@@ -12,6 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "product")
+// TODO Review each field and improve
 public class Product extends Auditable{
 
     @Id
@@ -46,9 +47,17 @@ public class Product extends Auditable{
             fetch = FetchType.LAZY)
     private Set<Variant> variants;
 
-    @OneToMany(mappedBy = "product",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.DETACH
+    }, fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "product_attribute",
+        joinColumns = @JoinColumn(name = "product_id"),
+        inverseJoinColumns = @JoinColumn(name = "attribute_id")
+    )
     private Set<Attribute> attributes;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -88,12 +97,12 @@ public class Product extends Auditable{
 
     public void addAttribute(Attribute attribute) {
         attributes.add(attribute);
-        attribute.setProduct(this);
+        attribute.getProducts().add(this);
     }
 
     private void removeAttribute(Attribute attribute) {
         attributes.remove(attribute);
-        attribute.setProduct(null);
+        attribute.getProducts().remove(this);
     }
 
     public void addReview(Review review) {

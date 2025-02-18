@@ -3,6 +3,8 @@ package net.renzo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -26,7 +28,16 @@ public class Attribute extends Auditable{
     @JoinColumn(name = "product_variant_id")
     private Variant variant;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @ManyToMany(mappedBy = "attributes", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private Set<Product> products;
+
+    public void addProduct(Product product) {
+        products.add(product);
+        product.getAttributes().add(this);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
+        product.getAttributes().remove(this);
+    }
 }

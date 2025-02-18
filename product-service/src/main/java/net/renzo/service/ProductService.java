@@ -1,5 +1,6 @@
 package net.renzo.service;
 
+import net.renzo.dto.ProductCreateDTO;
 import net.renzo.dto.ProductDTO;
 import net.renzo.dto.ProductUpdateDTO;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,7 @@ public interface ProductService {
      * @param product the product to create
      * @return the created product
      */
-    ProductDTO createProduct(ProductDTO productDTO);
+    ProductDTO createProduct(ProductCreateDTO productDTO);
 
     /**
      * Finds a product by its ID.
