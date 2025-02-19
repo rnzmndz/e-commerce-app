@@ -3,6 +3,7 @@ package net.renzo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -12,7 +13,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "product")
-// TODO Review each field and improve
 public class Product extends Auditable{
 
     @Id
@@ -28,24 +28,28 @@ public class Product extends Auditable{
     @Column(name = "sku", nullable = false, unique = true)
     private String sku;
 
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    private Category category;
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(
+            name = "product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Image> images;
+    private Set<Image> images = new HashSet<>();
 
     @Transient
     private Image defaultImage;
 
-    @OneToMany(mappedBy = "product",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    private Set<Variant> variants;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Variant> variants = new HashSet<>();
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -54,14 +58,14 @@ public class Product extends Auditable{
             CascadeType.DETACH
     }, fetch = FetchType.LAZY)
     @JoinTable(
-        name = "product_attribute",
-        joinColumns = @JoinColumn(name = "product_id"),
-        inverseJoinColumns = @JoinColumn(name = "attribute_id")
+            name = "product_attribute",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "attribute_id")
     )
-    private Set<Attribute> attributes;
+    private Set<Attribute> attributes = new HashSet<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Review> reviews;
+    private Set<Review> reviews = new HashSet<>();
 
     @PostLoad
     private void setDefaultImage() {
@@ -80,7 +84,7 @@ public class Product extends Auditable{
         image.setProduct(this);
     }
 
-    private void removeImage(Image image) {
+    public void removeImage(Image image) {
         images.remove(image);
         image.setProduct(null);
     }
@@ -90,7 +94,7 @@ public class Product extends Auditable{
         variant.setProduct(this);
     }
 
-    private void removeVariant(Variant variant) {
+    public void removeVariant(Variant variant) {
         variants.remove(variant);
         variant.setProduct(null);
     }
@@ -100,7 +104,7 @@ public class Product extends Auditable{
         attribute.getProducts().add(this);
     }
 
-    private void removeAttribute(Attribute attribute) {
+    public void removeAttribute(Attribute attribute) {
         attributes.remove(attribute);
         attribute.getProducts().remove(this);
     }
@@ -110,9 +114,29 @@ public class Product extends Auditable{
         review.setProduct(this);
     }
 
-    private void removeReview(Review review) {
+    public void removeReview(Review review) {
         reviews.remove(review);
         review.setProduct(null);
+    }
+
+    public void setBrand(Brand newBrand) {
+        if (this.brand != null) {
+            this.brand.getProducts().remove(this);
+        }
+        this.brand = newBrand;
+        if (newBrand != null) {
+            newBrand.getProducts().add(this);
+        }
+    }
+
+    public void addCategory(Category category) {
+        categories.add(category);
+        category.getProducts().add(this);
+    }
+
+    public void removeCategory(Category category) {
+        categories.remove(category);
+        category.getProducts().remove(this);
     }
 
 }

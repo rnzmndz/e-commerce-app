@@ -40,6 +40,22 @@ public interface AttributeService {
     AttributeDTO update(AttributeDTO attribute);
 
     /**
+         * Adds an attribute to a product.
+         *
+         * @param productId the ID of the product
+         * @param attributeId the ID of the attribute to add
+         */
+        void addAttributeToProduct(Long productId, Long attributeId);
+
+        /**
+         * Removes an attribute from a product.
+         *
+         * @param productId the ID of the product
+         * @param attributeId the ID of the attribute to remove
+         */
+        void removeAttributeFromProduct(Long productId, Long attributeId);
+
+    /**
      * Deletes a product attribute by its ID.
      *
      * @param id the ID of the attribute to delete

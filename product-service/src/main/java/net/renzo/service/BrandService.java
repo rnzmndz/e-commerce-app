@@ -47,6 +47,20 @@ public interface BrandService {
     BrandDTO updateBrand(Long id, BrandDTO brand);
 
     /**
+     * Add a product to a brand.
+     * @param brandId the ID of the brand
+     * @param productId the ID of the product
+     */
+    void addProductToBrand(Long brandId, Long productId);
+
+    /**
+     * Remove a product from a brand.
+     * @param brandId the ID of the brand
+     * @param productId the ID of the product
+     */
+    void removeProductFromBrand(Long brandId, Long productId);
+
+    /**
      * Delete a brand by its ID.
      * @param id the ID of the brand to delete
      */

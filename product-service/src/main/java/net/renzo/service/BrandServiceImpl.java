@@ -2,6 +2,7 @@ package net.renzo.service;
 
 import net.renzo.dto.BrandDTO;
 import net.renzo.exception.BrandNotFoundException;
+import net.renzo.exception.ProductNotFoundException;
 import net.renzo.mapper.BrandMapper;
 import net.renzo.model.Brand;
 import net.renzo.model.Product;
@@ -84,6 +85,30 @@ public class BrandServiceImpl implements BrandService{
 
         // Convert the updated entity back to a DTO
         return brandMapper.toDTO(updatedBrand);
+    }
+
+    @Override
+    @Transactional
+    public void addProductToBrand(Long brandId, Long productId) {
+        Brand brand = brandRepository.findById(brandId)
+                .orElseThrow(() -> new BrandNotFoundException("Brand not found")
+        );
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found")
+        );
+        brand.addProduct(product);
+        brandRepository.save(brand);
+    }
+
+    @Override
+    @Transactional
+    public void removeProductFromBrand(Long brandId, Long productId) {
+        Brand brand = brandRepository.findById(brandId)
+                .orElseThrow(() -> new BrandNotFoundException("Brand not found"));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        brand.removeProduct(product);
+        brandRepository.save(brand);
     }
 
     @Override

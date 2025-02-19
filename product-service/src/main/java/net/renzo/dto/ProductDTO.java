@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -28,7 +30,7 @@ public class ProductDTO {
 
     @NotNull
     @Schema(description = "The category of the product.", example = "Electronics")
-    private String categoryName;
+    private Set<CategoryDTO> categories;
 
     @NotNull
     @Schema(description = "The brand of the product.", example = "Apple")

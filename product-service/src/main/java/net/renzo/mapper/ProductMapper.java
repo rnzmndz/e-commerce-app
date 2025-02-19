@@ -13,12 +13,10 @@ import org.mapstruct.Mapping;
         unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE)
 public interface ProductMapper {
 
-    @Mapping(source = "category.name", target = "categoryName")
     @Mapping(source = "brand.name", target = "brandName")
     @Mapping(source = "defaultImage.url", target = "defaultImage")
     ProductDTO toDto(Product product);
 
-    @Mapping(source = "categoryName", target = "category.name")
     @Mapping(source = "brandName", target = "brand.name")
     @Mapping(source = "defaultImage", target = "defaultImage.url")
     Product toEntity(ProductDTO productDetailDTO);

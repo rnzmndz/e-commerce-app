@@ -2,9 +2,12 @@ package net.renzo.service;
 
 import net.renzo.dto.AttributeDTO;
 import net.renzo.exception.ProductAttributeNotFoundException;
+import net.renzo.exception.ProductNotFoundException;
 import net.renzo.mapper.ProductAttributeMapper;
 import net.renzo.model.Attribute;
+import net.renzo.model.Product;
 import net.renzo.repository.AttributeRepository;
+import net.renzo.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,11 +19,14 @@ import java.util.Optional;
 public class AttributeServiceImpl implements AttributeService {
 
     private final AttributeRepository attributeRepository;
+    private final ProductRepository productRepository;
     private final ProductAttributeMapper productAttributeMapper;
 
-    public AttributeServiceImpl(AttributeRepository attributeRepository, ProductAttributeMapper productAttributeMapper) {
+    public AttributeServiceImpl(AttributeRepository attributeRepository, ProductAttributeMapper productAttributeMapper
+            , ProductRepository productRepository) {
         this.attributeRepository = attributeRepository;
         this.productAttributeMapper = productAttributeMapper;
+        this.productRepository = productRepository;
     }
 
 
@@ -70,6 +76,40 @@ public class AttributeServiceImpl implements AttributeService {
 
         // Convert the updated product attribute entity back to a ProductAttributeDTO
         return productAttributeMapper.toDto(existingAttribute);
+    }
+
+    @Override
+    public void addAttributeToProduct(Long productId, Long attributeId) {
+        // Find the attribute by ID, throw exception if not found
+        Attribute attribute = attributeRepository.findById(attributeId)
+                .orElseThrow(() -> new ProductAttributeNotFoundException("Attribute not found"));
+
+        // Find the product by ID, throw exception if not found
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        // Add the attribute to the product
+        attribute.addProduct(product);
+
+        // Save the updated attribute
+        attributeRepository.save(attribute);
+    }
+
+    @Override
+    public void removeAttributeFromProduct(Long productId, Long attributeId) {
+        // Find the attribute by ID, throw exception if not found
+        Attribute attribute = attributeRepository.findById(attributeId)
+                .orElseThrow(() -> new ProductAttributeNotFoundException("Attribute not found"));
+
+        // Find the product by ID, throw exception if not found
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        // Remove the attribute from the product
+        attribute.removeProduct(product);
+
+        // Save the updated attribute
+        attributeRepository.save(attribute);
     }
 
     @Override

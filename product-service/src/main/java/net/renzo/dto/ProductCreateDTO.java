@@ -32,7 +32,7 @@ public class ProductCreateDTO {
 
     @NotNull
     @Schema(description = "The category of the product.", example = "Electronics")
-    private CategoryDTO category;
+    private Set<CategoryDTO> categories;
 
     @NotNull
     @Schema(description = "The brand of the product.", example = "Apple")

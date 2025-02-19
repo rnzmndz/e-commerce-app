@@ -1,6 +1,6 @@
 package net.renzo.service;
 
-import net.renzo.ProductNotFoundException;
+import net.renzo.exception.ProductNotFoundException;
 import net.renzo.dto.ProductCreateDTO;
 import net.renzo.dto.ProductDTO;
 import net.renzo.dto.ProductUpdateDTO;
@@ -58,10 +58,10 @@ public class ProductServiceImpl implements ProductService{
             throw new ProductNotFoundException("Product with the same name already exists");
         }
 
-        // Check if the product's category is provided
-        if (product.getCategory() != null) {
-            product.setCategory(categoryMapper.toEntity(productDTO.getCategory()));
-        }
+//        // Check if the product's category is provided
+//        if (product.getCategory() != null) {
+//            product.setCategory(categoryMapper.toEntity(productDTO.getCategory()));
+//        }
 
         // Check if the product's brand is provided
         if (product.getBrand() != null) {

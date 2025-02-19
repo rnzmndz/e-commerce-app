@@ -3,6 +3,9 @@ package net.renzo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -25,8 +28,16 @@ public class Brand {
     @Column(name = "logo")
     private String logo;
 
-    @OneToOne(mappedBy = "brand", cascade = {CascadeType.PERSIST, CascadeType.MERGE
-            , CascadeType.DETACH, CascadeType.REFRESH},
-            fetch = FetchType.LAZY)
-    private Product product;
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
+    private Set<Product> products = new HashSet<>();
+
+    public void addProduct(Product product) {
+        products.add(product);
+        product.setBrand(this);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
+        product.setBrand(null);
+    }
 }

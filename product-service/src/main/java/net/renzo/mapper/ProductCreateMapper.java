@@ -16,12 +16,6 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ProductCreateMapper {
 
-    @Mapping(target = "category", source = "category")
-    @Mapping(target = "brand", source = "brand")
-    @Mapping(target = "images", source = "images")
-    @Mapping(target = "variants", source = "variants")
-    @Mapping(target = "attributes", source = "attributes")
-    @Mapping(target = "reviews", source = "reviews")
     Product toEntity(ProductCreateDTO productCreateDTO);
 
 }

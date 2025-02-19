@@ -32,7 +32,7 @@ public class ProductDetailDTO {
 
     @NotNull
     @Schema(description = "The category of the product.", example = "Electronics")
-    private String categoryName;
+    private Set<CategoryDTO> categories;
 
     @NotNull
     @Schema(description = "The brand of the product.", example = "Apple")

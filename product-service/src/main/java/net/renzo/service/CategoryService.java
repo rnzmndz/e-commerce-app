@@ -53,6 +53,22 @@ public interface CategoryService {
     CategoryDTO updateCategory(Long id, CategoryDTO category);
 
     /**
+     * Adds a product to a category.
+     *
+     * @param categoryId the ID of the category
+     * @param productId the ID of the product to add
+     */
+    void addProductToCategory(Long categoryId, Long productId);
+
+    /**
+     * Removes a product from a category.
+     *
+     * @param categoryId the ID of the category
+     * @param productId the ID of the product to remove
+     */
+    void removeProductFromCategory(Long categoryId, Long productId);
+
+    /**
      * Deletes a category by its ID.
      *
      * @param id the ID of the category to delete

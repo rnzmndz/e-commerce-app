@@ -81,6 +81,17 @@ public class CategoryServiceImpl implements CategoryService {
         // Convert the updated category entity back to CategoryDTO
         return categoryMapper.toDto(updatedCategory);
     }
+// TODO Implement the addProductToCategory and removeProductFromCategory methods
+    @Override
+    public void addProductToCategory(Long categoryId, Long productId) {
+
+    }
+
+    @Override
+    public void removeProductFromCategory(Long categoryId, Long productId) {
+
+    }
+
     @Override
     @Transactional
     public void deleteCategory(Long id) {

@@ -3,6 +3,8 @@ package net.renzo.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -26,7 +28,7 @@ public class ProductListDTO {
     private ImageDTO defaultImage;
 
     @Schema(description = "The category name of the product.", example = "Electronics")
-    private String categoryName;
+    private Set<CategoryDTO> categories;
 
     @Schema(description = "The brand name of the product.", example = "BrandX")
     private String brandName;
