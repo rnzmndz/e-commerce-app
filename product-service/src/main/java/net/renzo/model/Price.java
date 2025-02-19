@@ -27,6 +27,4 @@ public class Price extends Auditable{
             fetch = FetchType.LAZY)
     private Variant variant;
 
-//    @Column(name = "effective_date", nullable = false)
-//    private String effectiveDate;
 }

@@ -2,9 +2,12 @@ package net.renzo.service;
 
 import net.renzo.dto.CategoryDTO;
 import net.renzo.exception.CategoryNotFoundException;
+import net.renzo.exception.ProductNotFoundException;
 import net.renzo.mapper.CategoryMapper;
 import net.renzo.model.Category;
+import net.renzo.model.Product;
 import net.renzo.repository.CategoryRepository;
+import net.renzo.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,12 +19,14 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
     private final CategoryMapper categoryMapper;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -81,15 +86,41 @@ public class CategoryServiceImpl implements CategoryService {
         // Convert the updated category entity back to CategoryDTO
         return categoryMapper.toDto(updatedCategory);
     }
-// TODO Implement the addProductToCategory and removeProductFromCategory methods
-    @Override
-    public void addProductToCategory(Long categoryId, Long productId) {
 
+    @Override
+    @Transactional
+    public void addProductToCategory(Long categoryId, Long productId) {
+        // Find the category by ID, throw exception if not found
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
+
+        // Find the product by ID, throw exception if not found
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        // Add the product to the category
+        category.addProduct(product);
+
+        // Save the updated category to the repository
+        categoryRepository.save(category);
     }
 
     @Override
+    @Transactional
     public void removeProductFromCategory(Long categoryId, Long productId) {
+        // Find the category by ID, throw exception if not found
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
 
+        // Find the product by ID, throw exception if not found
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        // Remove the product from the category
+        category.removeProduct(product);
+
+        // Save the updated category to the repository
+        categoryRepository.save(category);
     }
 
     @Override

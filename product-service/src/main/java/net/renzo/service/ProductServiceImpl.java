@@ -58,10 +58,12 @@ public class ProductServiceImpl implements ProductService{
             throw new ProductNotFoundException("Product with the same name already exists");
         }
 
-//        // Check if the product's category is provided
-//        if (product.getCategory() != null) {
-//            product.setCategory(categoryMapper.toEntity(productDTO.getCategory()));
-//        }
+        // Check if the product's category is provided
+        if (product.getCategories() != null) {
+            product.setCategories(new HashSet<>(productDTO.getCategories().stream()
+                    .map(categoryMapper::toEntity)
+                    .collect(java.util.stream.Collectors.toSet())));
+        }
 
         // Check if the product's brand is provided
         if (product.getBrand() != null) {
