@@ -12,6 +12,5 @@ public interface ProductImageMapper {
 
     Image toEntity(ImageDTO imageDTO);
 
-
     void updateEntity(ImageDTO imageDTO, @MappingTarget Image image);
 }

@@ -106,10 +106,11 @@ class ImageServiceImplTest {
         verify(productImageMapper).toDto(image);
     }
 
-    @Test
+   @Test
     void update() {
         // Arrange
         when(imageRepository.findById(1L)).thenReturn(Optional.of(image));
+        when(imageRepository.save(image)).thenReturn(image);
         when(productImageMapper.toDto(image)).thenReturn(imageDTO);
 
         // Act
