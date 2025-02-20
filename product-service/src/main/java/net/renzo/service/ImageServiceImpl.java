@@ -50,6 +50,10 @@ public class ImageServiceImpl implements ImageService {
         // Retrieve all ProductImage entities from the repository
         Page<Image> productImages = imageRepository.findAll(pageable);
 
+        if (productImages == null) {
+            return Page.empty();
+        }
+
         // Convert the list of ProductImage entities to a list of ProductImageDTOs
         return productImages.map(productImageMapper::toDto);
     }
