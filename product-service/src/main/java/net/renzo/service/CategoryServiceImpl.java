@@ -19,13 +19,11 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
-
     private final ProductRepository productRepository;
 
     private final CategoryMapper categoryMapper;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper
-            , ProductRepository productRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
         this.productRepository = productRepository;
@@ -88,6 +86,7 @@ public class CategoryServiceImpl implements CategoryService {
         // Convert the updated category entity back to CategoryDTO
         return categoryMapper.toDto(updatedCategory);
     }
+
     @Override
     @Transactional
     public void addProductToCategory(Long categoryId, Long productId) {
@@ -99,7 +98,7 @@ public class CategoryServiceImpl implements CategoryService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
-        // Add the product to the category (assuming a method addProduct exists in Category)
+        // Add the product to the category
         category.addProduct(product);
 
         // Save the updated category to the repository
@@ -117,7 +116,7 @@ public class CategoryServiceImpl implements CategoryService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
-        // Remove the product from the category (assuming a method removeProduct exists in Category)
+        // Remove the product from the category
         category.removeProduct(product);
 
         // Save the updated category to the repository
