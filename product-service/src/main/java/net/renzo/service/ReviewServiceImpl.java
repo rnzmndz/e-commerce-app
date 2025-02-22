@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
@@ -35,26 +37,33 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public ReviewDTO getProductReviewByProductId(Long id) {
+    public Optional<ReviewDTO> getProductReviewById(Long id) {
         // Retrieve the ProductReview entity by id, throw exception if not found
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new ProductReviewNotFoundException("Product review not found"));
 
         // Convert the ProductReview entity to ProductReviewDTO and return it
-        return productReviewMapper.toDto(review);
+        return Optional.of(productReviewMapper.toDto(review));
     }
 
     @Override
-    public Page<ReviewDTO> getProductReviewByProductId(Long id, Pageable pageable) {
+    public Page<ReviewDTO> getAllProductReview(Pageable pageable) {
         // Retrieve the ProductReview entities by productId
-        Page<Review> productReviews = reviewRepository.findByProductId(id, pageable);
-        if (productReviews.isEmpty()) {
-            throw new ProductReviewNotFoundException("Product reviews not found for product id: " + id);
-        }
+        Page<Review> productReviews = reviewRepository.findAll(pageable);
 
         // Convert the ProductReview entities to ProductReviewDTOs
         return productReviews.map(productReviewMapper::toDto);
     }
+
+    @Override
+    public Page<ReviewDTO> getProductReviewByProductId(Long productId, Pageable pageable) {
+        // Retrieve the ProductReview entities by productId and pageable
+        Page<Review> reviews = reviewRepository.findByProductId(productId, pageable);
+
+        // Convert the ProductReview entities to ProductReviewDTOs and return them
+        return reviews.map(productReviewMapper::toDto);
+    }
+
     @Override
     @Transactional
     public ReviewDTO updateProductReview(Long id, ReviewDTO productReview) {
@@ -82,4 +91,6 @@ public class ReviewServiceImpl implements ReviewService {
         // Delete the ProductReview entity from the repository
         reviewRepository.delete(existingReview);
     }
+
+
 }

@@ -37,7 +37,7 @@ class AddressControllerTest {
         ResponseEntity<EntityModel<AddressDTO>> response = addressController.getAddressByUserId(1L);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(addressDTO, response.getBody());
+        assertEquals(addressDTO, response.getBody().getContent());
     }
 
     @Test
@@ -48,6 +48,6 @@ class AddressControllerTest {
         ResponseEntity<EntityModel<AddressDTO>> response = addressController.updateAddress(1L, addressDTO);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(addressDTO, response.getBody());
+        assertEquals(addressDTO, response.getBody().getContent());
     }
 }

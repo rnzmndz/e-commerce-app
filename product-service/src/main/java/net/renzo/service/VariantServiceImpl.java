@@ -10,6 +10,9 @@ import net.renzo.repository.VariantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
+
 public class VariantServiceImpl implements VariantService{
 
     private final VariantRepository variantRepository;
@@ -35,13 +38,13 @@ public class VariantServiceImpl implements VariantService{
     }
 
     @Override
-    public VariantDTO getProductVariantById(Long id) {
+    public Optional<VariantDTO> getProductVariantById(Long id) {
         // Retrieve the variant by ID
         Variant variant = variantRepository.findById(id)
                 .orElseThrow(() -> new VariantNotFoundException("Variant not found with ID: " + id));
 
         // Convert entity to DTO
-        return variantMapper.toDto(variant);
+        return Optional.of(variantMapper.toDto(variant));
     }
 
     @Override

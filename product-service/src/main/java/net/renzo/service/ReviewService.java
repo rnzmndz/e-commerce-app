@@ -4,6 +4,8 @@ import net.renzo.dto.ReviewDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 /**
  * Service interface for managing product reviews.
  */
@@ -21,9 +23,17 @@ public interface ReviewService {
      * Retrieves a product review by its ID.
      *
      * @param id the ID of the product review
-     * @return the product review with the specified ID
+     * @return an Optional containing the product review if found, or empty if not found
      */
-    Page<ReviewDTO> getProductReviewByProductId(Long id, Pageable pageable);
+    Optional<ReviewDTO> getProductReviewById(Long id);
+
+    /**
+     * Retrieves all product reviews with pagination.
+     *
+     * @param pageable the pagination information
+     * @return a page of product reviews
+     */
+    Page<ReviewDTO> getAllProductReview(Pageable pageable);
 
     /**
      * Retrieves a product review by the product ID.
@@ -31,7 +41,7 @@ public interface ReviewService {
      * @param productId the ID of the product
      * @return the product review for the specified product
      */
-    ReviewDTO getProductReviewByProductId(Long productId);
+    Page<ReviewDTO> getProductReviewByProductId(Long productId, Pageable pageable);
 
     /**
      * Updates an existing product review.

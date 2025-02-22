@@ -1,0 +1,17 @@
+@startuml
+package net.renzo.service {
+    class AttributeServiceImpl {
+        - AttributeRepository attributeRepository
+        - ProductRepository productRepository
+        - ProductAttributeMapper productAttributeMapper
+        + AttributeServiceImpl(AttributeRepository, ProductAttributeMapper, ProductRepository)
+        + save(AttributeDTO): AttributeDTO
+        + findById(Long): Optional<AttributeDTO>
+        + findAll(Pageable): Page<AttributeDTO>
+        + update(AttributeDTO): AttributeDTO
+        + addAttributeToProduct(Long, Long): void
+        + removeAttributeFromProduct(Long, Long): void
+        + deleteById(Long): void
+    }
+}
+@enduml

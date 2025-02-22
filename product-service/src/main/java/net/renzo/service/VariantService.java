@@ -4,6 +4,8 @@ import net.renzo.dto.VariantDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 /**
  * Service interface for managing product variants.
  */
@@ -23,7 +25,7 @@ public interface VariantService {
      * @param id the ID of the product variant
      * @return the product variant data transfer object
      */
-    VariantDTO getProductVariantById(Long id);
+    Optional<VariantDTO> getProductVariantById(Long id);
 
     /**
      * Retrieves product variants by product ID with pagination.

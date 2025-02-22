@@ -50,19 +50,15 @@ public class ImageServiceImpl implements ImageService {
         // Retrieve all ProductImage entities from the repository
         Page<Image> productImages = imageRepository.findAll(pageable);
 
-        if (productImages == null) {
-            return Page.empty();
-        }
-
         // Convert the list of ProductImage entities to a list of ProductImageDTOs
         return productImages.map(productImageMapper::toDto);
     }
 
     @Override
     @Transactional
-    public ImageDTO update(ImageDTO imageDTO) {
+    public ImageDTO update(Long id, ImageDTO imageDTO) {
         // Retrieve the existing ProductImage entity by id, throw exception if not found
-        Image existingImage = imageRepository.findById(imageDTO.getId())
+        Image existingImage = imageRepository.findById(id)
                 .orElseThrow(() -> new ProductImageNotFoundException("Product image not found"));
 
         // Update the existing ProductImage entity with values from the DTO

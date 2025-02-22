@@ -15,13 +15,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ImageServiceImplTest {
@@ -41,29 +39,27 @@ class ImageServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         imageDTO = new ImageDTO();
         imageDTO.setId(1L);
         imageDTO.setUrl("http://example.com/image.jpg");
 
-        image = new Image();
-        image.setId(1L);
-        image.setUrl("http://example.com/image.jpg");
+        image = Image.builder()
+                .id(1L)
+                .url("http://example.com/image.jpg")
+                .isPrimary(false)
+                .build();
 
         imagePage = new PageImpl<>(Collections.singletonList(image), PageRequest.of(0, 10), 1);
     }
 
     @Test
     void save() {
-        // Arrange
         when(productImageMapper.toEntity(imageDTO)).thenReturn(image);
         when(imageRepository.save(image)).thenReturn(image);
         when(productImageMapper.toDto(image)).thenReturn(imageDTO);
 
-        // Act
         ImageDTO savedImageDTO = imageService.save(imageDTO);
 
-        // Assert
         assertNotNull(savedImageDTO);
         assertEquals(imageDTO.getId(), savedImageDTO.getId());
         assertEquals(imageDTO.getUrl(), savedImageDTO.getUrl());
@@ -74,31 +70,25 @@ class ImageServiceImplTest {
 
     @Test
     void findById() {
-        // Arrange
         when(imageRepository.findById(1L)).thenReturn(Optional.of(image));
         when(productImageMapper.toDto(image)).thenReturn(imageDTO);
 
-        // Act
-        Optional<ImageDTO> foundImageDTO = imageService.findById(1L);
+        ImageDTO foundImageDTO = imageService.findById(1L).orElseThrow();
 
-        // Assert
-        assertTrue(foundImageDTO.isPresent());
-        assertEquals(imageDTO.getId(), foundImageDTO.get().getId());
-        assertEquals(imageDTO.getUrl(), foundImageDTO.get().getUrl());
+        assertNotNull(foundImageDTO);
+        assertEquals(imageDTO.getId(), foundImageDTO.getId());
+        assertEquals(imageDTO.getUrl(), foundImageDTO.getUrl());
         verify(imageRepository).findById(1L);
         verify(productImageMapper).toDto(image);
     }
 
     @Test
     void findAll() {
-        // Arrange
         when(imageRepository.findAll(PageRequest.of(0, 10))).thenReturn(imagePage);
         when(productImageMapper.toDto(image)).thenReturn(imageDTO);
 
-        // Act
         Page<ImageDTO> imageDTOPage = imageService.findAll(PageRequest.of(0, 10));
 
-        // Assert
         assertNotNull(imageDTOPage);
         assertEquals(1, imageDTOPage.getTotalElements());
         assertEquals(imageDTO.getId(), imageDTOPage.getContent().get(0).getId());
@@ -106,34 +96,30 @@ class ImageServiceImplTest {
         verify(productImageMapper).toDto(image);
     }
 
-   @Test
+    @Test
     void update() {
-        // Arrange
         when(imageRepository.findById(1L)).thenReturn(Optional.of(image));
         when(imageRepository.save(image)).thenReturn(image);
         when(productImageMapper.toDto(image)).thenReturn(imageDTO);
+        doNothing().when(productImageMapper).updateEntity(imageDTO, image);
 
-        // Act
-        ImageDTO updatedImageDTO = imageService.update(imageDTO);
+        ImageDTO updatedImageDTO = imageService.update(1L, imageDTO);
 
-        // Assert
         assertNotNull(updatedImageDTO);
         assertEquals(imageDTO.getId(), updatedImageDTO.getId());
         assertEquals(imageDTO.getUrl(), updatedImageDTO.getUrl());
         verify(imageRepository).findById(1L);
+        verify(productImageMapper).updateEntity(imageDTO, image);
         verify(imageRepository).save(image);
         verify(productImageMapper).toDto(image);
     }
 
     @Test
     void deleteById() {
-        // Arrange
         when(imageRepository.findById(1L)).thenReturn(Optional.of(image));
 
-        // Act
         imageService.deleteById(1L);
 
-        // Assert
         verify(imageRepository).findById(1L);
         verify(imageRepository).delete(image);
     }

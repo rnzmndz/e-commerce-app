@@ -5,7 +5,8 @@ import net.renzo.model.Image;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+    unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE)
 public interface ProductImageMapper {
 
     ImageDTO toDto(Image image);

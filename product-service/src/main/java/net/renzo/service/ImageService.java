@@ -37,7 +37,7 @@ public interface ImageService {
      * @param imageDTO the product image to update
      * @return the updated product image
      */
-    ImageDTO update(ImageDTO imageDTO);
+    ImageDTO update(Long id, ImageDTO imageDTO);
 
     /**
      * Deletes a product image by its ID.

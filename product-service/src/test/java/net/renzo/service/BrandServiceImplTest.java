@@ -32,7 +32,6 @@ class BrandServiceImplTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    // TODO Fix the testCreateBrand test case
     @Test
     void testCreateBrand() {
         BrandDTO brandDTO = new BrandDTO();
@@ -42,6 +41,7 @@ class BrandServiceImplTest {
         brand.setId(1L);
         brand.setName("Test Brand");
 
+        when(brandMapper.toEntity(any(BrandDTO.class))).thenReturn(brand);
         when(brandRepository.save(any(Brand.class))).thenReturn(brand);
         when(brandMapper.toDTO(brand)).thenReturn(BrandDTO.builder().id(1L).name("Test Brand").build());
 
@@ -51,7 +51,9 @@ class BrandServiceImplTest {
         assertEquals(1L, result.getId());
         assertEquals("Test Brand", result.getName());
 
+        verify(brandMapper, times(1)).toEntity(any(BrandDTO.class));
         verify(brandRepository, times(1)).save(any(Brand.class));
+        verify(brandMapper, times(1)).toDTO(any(Brand.class));
     }
     @Test
     void testFindBrandById() {

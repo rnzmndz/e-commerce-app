@@ -4,6 +4,8 @@ import net.renzo.userservice.dto.UserCreateDTO;
 import net.renzo.userservice.dto.UserDTO;
 import net.renzo.userservice.dto.UserListDTO;
 import net.renzo.userservice.dto.UserUpdateDTO;
+import net.renzo.userservice.exception.InvalidPasswordException;
+import net.renzo.userservice.exception.UserNotFoundException;
 import net.renzo.userservice.mapper.*;
 import net.renzo.userservice.model.Authority;
 import net.renzo.userservice.model.UserDetail;
@@ -12,26 +14,23 @@ import net.renzo.userservice.repository.AuthorityRepository;
 import net.renzo.userservice.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import javax.swing.text.html.Option;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
 
     @Mock
@@ -58,11 +57,12 @@ class UserServiceImplTest {
     @Mock
     private ProfileMapper profileMapper;
 
+    @InjectMocks
     private UserServiceImpl userService;
 
     @BeforeEach
     void setUp() {
-        userService = new UserServiceImpl(userRepository, authorityRepository, userCreateMapper, userMapper, userListMapper, userUpdateMapper, addressMapper, profileMapper);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -107,11 +107,11 @@ class UserServiceImplTest {
         createDTO.setUsername("existinguser");
         createDTO.setEmail("test@example.com");
 
-        lenient().when(userRepository.existsByUsername(anyString())).thenReturn(true);
-        lenient().when(userRepository.existsByEmail(anyString())).thenReturn(true);
+        when(userRepository.existsByUsername(anyString())).thenReturn(true);
+        when(userRepository.existsByEmail(anyString())).thenReturn(true);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> userService.createUser(createDTO));
+        assertThrows(UserNotFoundException.class, () -> userService.createUser(createDTO));
     }
 
     @Test
@@ -254,7 +254,7 @@ class UserServiceImplTest {
         when(userRepository.findById(userId)).thenReturn(Optional.of(userDetail));
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> userService.changePassword(userId, invalidPassword));
+        assertThrows(InvalidPasswordException.class, () -> userService.changePassword(userId, invalidPassword));
         verify(userRepository, never()).save(any(UserDetail.class));
     }
 }
