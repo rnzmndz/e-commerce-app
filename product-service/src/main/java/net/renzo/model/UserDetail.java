@@ -22,7 +22,6 @@ public class UserDetail extends Auditable{
     @Column(name = "email", nullable = false)
     private String email;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne(mappedBy = "userDetail")
     private Review review;
 }

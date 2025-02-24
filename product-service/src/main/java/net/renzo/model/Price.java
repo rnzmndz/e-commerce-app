@@ -10,8 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "price")
-public class Price extends Auditable{
-
+public class Price extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,9 +21,6 @@ public class Price extends Auditable{
     @Column(name = "currency", nullable = false)
     private String currency;
 
-    @OneToOne(mappedBy = "price",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
-            fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "price")
     private Variant variant;
-
 }

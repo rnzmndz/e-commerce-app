@@ -58,7 +58,7 @@ public class Product extends Auditable{
             CascadeType.DETACH
     }, fetch = FetchType.LAZY)
     @JoinTable(
-            name = "product_attribute",
+            name = "product_attribute_relationship",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "attribute_id")
     )
