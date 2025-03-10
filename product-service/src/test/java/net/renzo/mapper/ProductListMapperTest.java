@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -40,7 +39,7 @@ class ProductListMapperTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
+   @Test
     void testToProductListDTO() {
         // Prepare test data
         Product product = new Product();
@@ -50,7 +49,7 @@ class ProductListMapperTest {
                 .description("Electronic devices")
                 .products(new HashSet<>())
                 .build();
-        product.addCategory(category);
+        product.setCategory(category); // Ensure the category is set directly
         Brand brand = Brand.builder()
                 .id(1L)
                 .name("Apple")
@@ -71,10 +70,10 @@ class ProductListMapperTest {
 
         // Verify results
         assertNotNull(dto);
-        assertEquals(1, dto.getCategories().size());
-        assertEquals("Electronics", dto.getCategories().iterator().next().getName());
+        assertNotNull(dto.getCategory()); // Ensure category is not null
+        assertEquals("Electronics", dto.getCategory().getName());
         assertEquals("Apple", dto.getBrandName());
-        assertEquals(1L, dto.getCategories().iterator().next().getId());
+        assertEquals(1L, dto.getCategory().getId());
     }
 
     @Test
@@ -84,7 +83,7 @@ class ProductListMapperTest {
                 .id(1L)
                 .name("Electronics")
                 .build();
-        dto.setCategories(Set.of(categoryDTO));
+        dto.setCategory(categoryDTO);
         dto.setBrandName("BrandName");
 
         Category category = Category.builder()
@@ -96,7 +95,7 @@ class ProductListMapperTest {
 
         Product product = mapper.toProduct(dto);
 
-        assertEquals("Electronics", product.getCategories().iterator().next().getName());
+        assertEquals("Electronics", product.getCategory().getName());
         assertEquals("BrandName", product.getBrand().getName());
     }
 }

@@ -29,7 +29,7 @@ public class Category extends Auditable{
     @JoinColumn(name = "sub_category_id")
     private Category subCategory;
 
-    @ManyToMany(mappedBy = "categories",
+    @OneToMany(mappedBy = "category",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                       CascadeType.REFRESH, CascadeType.DETACH},
             fetch = FetchType.LAZY)
@@ -37,12 +37,10 @@ public class Category extends Auditable{
 
     public void addProduct(Product product) {
         products.add(product);
-        product.getCategories().add(this);
     }
 
     public void removeProduct(Product product) {
         products.remove(product);
-        product.getCategories().remove(this);
     }
 
 

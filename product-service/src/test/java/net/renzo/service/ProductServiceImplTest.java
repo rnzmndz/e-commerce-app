@@ -59,7 +59,6 @@ class ProductServiceImplTest {
     void createProduct() {
         // Arrange
         ProductCreateDTO productCreateDTO = new ProductCreateDTO();
-        productCreateDTO.setCategories(new HashSet<>()); // Ensure categories is not null
 
         Product product = new Product();
         // Set necessary fields for product

@@ -55,7 +55,7 @@ class ProductCreateMapperTest {
         productCreateDTO = new ProductCreateDTO();
         productCreateDTO.setName("Test Product");
         productCreateDTO.setDescription("Test Description");
-        productCreateDTO.setCategories(Set.of(new CategoryDTO(1L, "CategoryName", "CategoryDescription", null)));
+        productCreateDTO.setCategory(new CategoryDTO(1L, "CategoryName", "CategoryDescription", null));
         productCreateDTO.setBrand(new BrandDTO(1L, "BrandName", "BrandDescription", null));
         productCreateDTO.setImages(Set.of(new ImageDTO(1L, "ImageURL", 0L)));
         productCreateDTO.setVariants(Collections.singleton(new VariantDTO(1L, "VariantName", new PriceDTO(1L, 50.0, "USD"), 10, null)));
@@ -96,9 +96,8 @@ class ProductCreateMapperTest {
         assertEquals("Test Description", product.getDescription(), "Product description should match");
 
         // Verify category mapping
-        assertNotNull(product.getCategories(), "Categories should not be null");
-        assertEquals(1, product.getCategories().size(), "Should have one category");
-        assertEquals(1L, product.getCategories().iterator().next().getId(), "Category ID should match");
+        assertNotNull(product.getCategory(), "Categories should not be null");
+        assertEquals(1L, product.getCategory().getId(), "Category ID should match");
         verify(categoryMapper).toEntity(any(CategoryDTO.class));
 
         // Verify brand mapping

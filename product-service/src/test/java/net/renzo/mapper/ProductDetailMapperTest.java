@@ -75,8 +75,10 @@ class ProductDetailMapperTest {
         assertEquals(product.getName(), dto.getName());
         assertEquals(product.getDescription(), dto.getDescription());
         assertEquals(product.getSku(), dto.getSku());
-        assertNotNull(dto.getCategories());
-        assertFalse(dto.getCategories().isEmpty());
+        assertNotNull(dto.getCategory());
+        assertEquals(category.getId(), dto.getCategory().getId());
+        assertEquals(category.getName(), dto.getCategory().getName());
+        assertEquals(category.getDescription(), dto.getCategory().getDescription());
         assertEquals(product.getBrand().getName(), dto.getBrandName());
     }
 
@@ -94,7 +96,7 @@ class ProductDetailMapperTest {
                 .name("Electronics")
                 .description("Electronic devices")
                 .build();
-        dto.setCategories(Set.of(categoryDTO));
+        dto.setCategory(categoryDTO);
 
         dto.setBrandName("Apple");
 
@@ -115,8 +117,6 @@ class ProductDetailMapperTest {
         assertEquals(dto.getName(), product.getName());
         assertEquals(dto.getDescription(), product.getDescription());
         assertEquals(dto.getSku(), product.getSku());
-        assertNotNull(product.getCategories());
-        assertEquals(1, product.getCategories().size());
         assertEquals(dto.getBrandName(), product.getBrand().getName());
     }
 }

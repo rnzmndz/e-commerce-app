@@ -28,15 +28,11 @@ public class Product extends Auditable{
     @Column(name = "sku", nullable = false, unique = true)
     private String sku;
 
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToOne(fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinTable(
-            name = "product_category",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private Set<Category> categories = new HashSet<>();
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id", nullable = false)
@@ -130,12 +126,10 @@ public class Product extends Auditable{
     }
 
     public void addCategory(Category category) {
-        categories.add(category);
         category.getProducts().add(this);
     }
 
     public void removeCategory(Category category) {
-        categories.remove(category);
         category.getProducts().remove(this);
     }
 

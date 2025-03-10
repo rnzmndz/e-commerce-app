@@ -28,7 +28,7 @@ public class ProductListDTO {
     private ImageDTO defaultImage;
 
     @Schema(description = "The category name of the product.", example = "Electronics")
-    private Set<CategoryDTO> categories;
+    private CategoryDTO category;
 
     @Schema(description = "The brand name of the product.", example = "BrandX")
     private String brandName;
