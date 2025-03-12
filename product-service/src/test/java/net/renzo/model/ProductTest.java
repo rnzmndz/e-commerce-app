@@ -141,18 +141,20 @@ class ProductTest {
     }
 
     @Test
-    void testAddCategory() {
-        Category newCategory = Category.builder().id(2L).name("Mobile").products(new HashSet<>()).build();
+    void testGetAttributes() {
+        Attribute attribute1 = new Attribute();
+        attribute1.setId(1L);
+        attribute1.setKey("Color");
 
-        product.addCategory(newCategory);
+        Attribute attribute2 = new Attribute();
+        attribute2.setId(2L);
+        attribute2.setKey("Size");
 
-        assertTrue(newCategory.getProducts().contains(product));
-    }
+        product.addAttribute(attribute1);
+        product.addAttribute(attribute2);
 
-    @Test
-    void testRemoveCategory() {
-        product.removeCategory(category);
-
-        assertFalse(category.getProducts().contains(product));
+        assertEquals(2, product.getAttributes().size());
+        assertTrue(product.getAttributes().contains(attribute1));
+        assertTrue(product.getAttributes().contains(attribute2));
     }
 }

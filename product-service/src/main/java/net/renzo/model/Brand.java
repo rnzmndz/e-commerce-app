@@ -29,9 +29,12 @@ public class Brand {
     private String logo;
 
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
-    private Set<Product> products = new HashSet<>();
+    private Set<Product> products;
 
     public void addProduct(Product product) {
+        if (products == null) {
+            products = new HashSet<>();
+        }
         products.add(product);
         product.setBrand(this);
     }

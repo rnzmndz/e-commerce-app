@@ -3,6 +3,7 @@ package net.renzo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -32,6 +33,9 @@ public class Attribute extends Auditable{
     private Set<Product> products;
 
     public void addProduct(Product product) {
+        if (products == null) {
+            products = new HashSet<>();
+        }
         products.add(product);
         product.getAttributes().add(this);
     }
@@ -39,5 +43,12 @@ public class Attribute extends Auditable{
     public void removeProduct(Product product) {
         products.remove(product);
         product.getAttributes().remove(this);
+    }
+
+    public Set<Product> getProducts() {
+        if (products == null) {
+            products = new HashSet<>();
+        }
+        return products;
     }
 }

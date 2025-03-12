@@ -1,9 +1,5 @@
 package net.renzo.mapper;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import net.renzo.dto.CategoryDTO;
 import net.renzo.dto.ProductDetailDTO;
 import net.renzo.model.Brand;
@@ -18,7 +14,12 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
-import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductDetailMapperTest {
@@ -58,13 +59,22 @@ class ProductDetailMapperTest {
                 .description("Electronic devices")
                 .products(new HashSet<>())
                 .build();
-        product.addCategory(category);
+        product.setCategory(category);
 
         product.setBrand(Brand.builder()
                 .id(1L)
                 .name("Apple")
                 .products(new HashSet<>())
                 .build());
+
+        // Mock category mapping
+        CategoryDTO categoryDTO = CategoryDTO.builder()
+                .id(1L)
+                .name("Electronics")
+                .description("Electronic devices")
+                .build();
+        lenient().when(categoryMapper.toDto(any(Category.class)))
+                .thenReturn(categoryDTO);
 
         // Execute
         ProductDetailDTO dto = mapper.toDto(product);

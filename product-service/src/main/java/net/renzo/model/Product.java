@@ -39,13 +39,13 @@ public class Product extends Auditable{
     private Brand brand;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Image> images = new HashSet<>();
+    private Set<Image> images;
 
     @Transient
     private Image defaultImage;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Variant> variants = new HashSet<>();
+    private Set<Variant> variants;
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -58,10 +58,10 @@ public class Product extends Auditable{
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "attribute_id")
     )
-    private Set<Attribute> attributes = new HashSet<>();
+    private Set<Attribute> attributes;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Review> reviews = new HashSet<>();
+    private Set<Review> reviews;
 
     @PostLoad
     private void setDefaultImage() {
@@ -76,6 +76,9 @@ public class Product extends Auditable{
     }
 
     public void addImage(Image image) {
+        if (images == null) {
+            images = new HashSet<>();
+        }
         images.add(image);
         image.setProduct(this);
     }
@@ -86,6 +89,9 @@ public class Product extends Auditable{
     }
 
     public void addVariant(Variant variant) {
+        if (variants == null) {
+            variants = new HashSet<>();
+        }
         variants.add(variant);
         variant.setProduct(this);
     }
@@ -96,6 +102,9 @@ public class Product extends Auditable{
     }
 
     public void addAttribute(Attribute attribute) {
+        if (attributes == null) {
+            attributes = new HashSet<>();
+        }
         attributes.add(attribute);
         attribute.getProducts().add(this);
     }
@@ -106,6 +115,9 @@ public class Product extends Auditable{
     }
 
     public void addReview(Review review) {
+        if (reviews == null) {
+            reviews = new HashSet<>();
+        }
         reviews.add(review);
         review.setProduct(this);
     }
@@ -125,12 +137,10 @@ public class Product extends Auditable{
         }
     }
 
-    public void addCategory(Category category) {
-        category.getProducts().add(this);
+    public Set<Attribute> getAttributes() {
+        if (attributes == null) {
+            attributes = new HashSet<>();
+        }
+        return attributes;
     }
-
-    public void removeCategory(Category category) {
-        category.getProducts().remove(this);
-    }
-
 }
