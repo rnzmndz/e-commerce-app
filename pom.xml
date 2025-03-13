@@ -25,7 +25,8 @@
 		<module>user-service</module>
 		<module>product-service</module>
         <module>api-gateway</module>
-    </modules>
+		<module>order-service</module>
+	</modules>
 	<scm>
 		<connection/>
 		<developerConnection/>
